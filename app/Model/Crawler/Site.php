@@ -9,6 +9,6 @@ class Site extends Model
 	protected $table = 'sites';
 
 	public function url(){
-		$this->hasMany('App\Model\Crawler\Url','site_id','id');
+		return $this->hasMany('App\Model\Crawler\Url','site_id','id');
 	}
 }

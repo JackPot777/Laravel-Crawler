@@ -11,11 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+    //return view('welcome');
+//});
 
 Route::get('/user','Auth\AuthController@getLogin');
+Route::get('/','Auth\AuthController@getLogin');
 
 Route::get('/user/login','Auth\AuthController@getLogin');
 Route::post('/user/login','Auth\AuthController@postLogin');
@@ -26,13 +27,38 @@ Route::get('/user/register','Auth\AuthController@getRegister');
 Route::post('/user/register','Auth\AuthController@postRegister');
 
 /*---Crawler Panel---*/
-Route::get('/crawler','Crawler\CrawlController@getIndex');
 
-Route::get('/crawler/site','Crawler\CrawlController@getSites');
-Route::get('/crawler/site/{siteId}','Crawler\CrawlController@getSite');
+//Route::get('/crawler','Crawler\CrawlController@getIndex');
 
-Route::get('/crawler/url','Crawler\CrawlController@getAllUrls');
-Route::get('/crawler/url/{siteId}','Crawler\CrawlController@getUrls');
+//Route::get('/crawler/site','Crawler\CrawlController@getListSites');
+//Route::get('/crawler/site/list','Crawler\CrawlController@getListSites');
+//Route::get('/crawler/site/get','Crawler\CrawlController@getListSites');
+//Route::get('/crawler/site/get/{siteId}','Crawler\CrawlController@getSite');
+//Route::get('/crawler/site/create','Crawler\CrawlController@getCreateSite');
+//Route::post('/crawler/site/create','Crawler\CrawlController@postCreateSite');
+//Route::get('/crawler/site/edit/{siteId}','Crawler\CrawlController@getEditSite');
+//Route::post('/crawler/site/edit/{siteId}','Crawler\CrawlController@postEditSite');
+//Route::get('/crawler/site/trashbin','Crawler\CrawlController@getDeletedSites');
+//Route::get('/crawler/site/delete/{siteId}','Crawler\CrawlController@getDeleteSite');
 
-Route::get('/crawler/crawlees/{urlId}','Crawler\CrawlController@getCrawlees');
+//Route::get('/crawler/url','Crawler\CrawlController@getAllUrls');
+//Route::get('/crawler/url/{siteId}','Crawler\CrawlController@getUrls');
 
+//Route::get('/crawler/crawlees/{urlId}','Crawler\CrawlController@getCrawlees');
+
+Route::get('/dashboard',['middleware'=>'auth', function (){
+	return view('pages.indexdashboard');
+}]);
+
+/*---Objectives Management---*/
+//TODO: Refactor objectives method into ObjController
+Route::get('/objectives/site','Crawler\CrawlController@getListSites');
+Route::get('/objectives/site/list','Crawler\CrawlController@getListSites');
+Route::get('/objectives/site/get','Crawler\CrawlController@getListSites');
+Route::get('/objectives/site/get/{siteId}','Crawler\CrawlController@getSite');
+Route::get('/objectives/site/create','Crawler\CrawlController@getCreateSite');
+Route::post('/objectives/site/create','Crawler\CrawlController@postCreateSite');
+Route::get('/objectives/site/edit/{siteId}','Crawler\CrawlController@getEditSite');
+Route::post('/objectives/site/edit/{siteId}','Crawler\CrawlController@postEditSite');
+Route::get('/objectives/site/trashbin','Crawler\CrawlController@getDeletedSites');
+Route::get('/objectives/site/delete/{siteId}','Crawler\CrawlController@getDeleteSite');

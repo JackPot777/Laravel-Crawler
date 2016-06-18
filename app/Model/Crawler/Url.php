@@ -95,10 +95,10 @@ class Url extends Model
 
 
 	public function crawlee(){
-		$this->hasMany('App\Model\Crawler\Crawlee','url_id','id');
+		return $this->hasMany('App\Model\Crawler\Crawlee','url_id','id');
 	}
 
 	public function site(){
-		$this->belongsTo('App\Model\Crawler\Site','site_id','id');
+		return $this->belongsTo('App\Model\Crawler\Site','site_id','id');
 	}
 }

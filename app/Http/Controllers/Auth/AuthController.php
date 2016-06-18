@@ -23,6 +23,30 @@ class AuthController extends Controller
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
+    /* Customize Login Path */
+    protected $loginPath = '/user/login';
+    protected $redirectPath ='/dashboard';
+    protected $redirectAfterLogout = '/user/login';
+    /**
+     * Override the application login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getLogin()
+    {
+        return view('pages.login');
+    }
+
+    /**
+     * Override the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRegister()
+    {
+        return view('pages.register');
+    }
+
     /**
      * Create a new authentication controller instance.
      *

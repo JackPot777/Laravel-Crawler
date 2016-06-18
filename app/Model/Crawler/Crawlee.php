@@ -9,6 +9,6 @@ class Crawlee extends Model
 	protected $table = 'crawlees';
 
 	public function url(){
-		$this->belongsTo('App\Model\Crawler\Url','url_id','id');
+		return $this->belongsTo('App\Model\Crawler\Url','url_id','id');
 	}
 }

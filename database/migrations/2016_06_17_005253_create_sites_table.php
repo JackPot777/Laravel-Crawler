@@ -5,7 +5,8 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateSitesTable extends Migration
 {
-    /**
+	use SoftDeletes;
+	/**
      * Run the migrations.
      *
      * @return void

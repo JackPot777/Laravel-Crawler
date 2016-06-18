@@ -14,25 +14,25 @@ class SampleSiteCrawleeSeeder extends Seeder
      */
     public function run(){
         $site               = new Site();
-        $site['name']       = 'Sample Site';
-        $site['desc']       = 'The biggest discussion channel in the world.';
-        $site['root_url']   = 'http://localhost';
+        $site['name']       = 'Laravel Offical Website';
+        $site['desc']       = 'Laravel offical website. You know what it is.';
+        $site['root_url']   = 'http://www.laravel.com';
         $site->save();
 
         $url = new Url();
-        $url['name']         = 'Sample Crawl';
-        $url['original_url'] = 'http://localhost/jklashdjkahqghjkq!asdjkhkjH$%TYUIPO!#%^!(Y!&(^YUQIY!#^';
+        $url['name']         = 'Prologue(5.0-5.2) : Release Notes, Upgrade Guide, Contribution Guide';
+        $url['original_url'] = 'http://laravel.com/docsi/5.@param0/@param1';
         $url['site_id']     = $site['id'];
-		$url['type'] 		 = 'Simple';
-		$url['settings']	 = '{ "type": "Simple", "isCustomized": false }';
+		$url['type'] 		 = 'Simple_Custom';
+		$url['settings']	 = '{ "type": "Simple_Custom", "params": [ { "name": "@param0", "type": "number", "start": 0, "end": 2 }, { "name": "@param1", "type": "string", "combination": [ "releases", "upgrade", "contributions" ] } ] }';
         $url->save();
 
         $url = new Url();
-        $url['name']         = 'Custom Crawl';
-        $url['original_url'] = 'http://localhost/s/@param0/g/@param1';
+        $url['name']         = 'Home Page';
+        $url['original_url'] = 'http://laravel.com';
         $url['site_id']     = $site['id'];
-		$url['type'] 		 = 'Simple_Custom';
-		$url['settings']	 = '{ "type": "Simple_Custom", "isCustomized": true, "params": [ { "name": "@param0", "type": "number", "start": 1, "end":99 }, { "name": "@param1", "type": "string", "combination": [ "new", "old", "outdated", "classic" ] } ] }';
+		$url['type'] 		 = 'Simple';
+		$url['settings']	 = '{ "type":"Simple"  }';
         $url->save();
 
     }
