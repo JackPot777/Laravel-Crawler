@@ -46,19 +46,23 @@ Route::post('/user/register','Auth\AuthController@postRegister');
 
 //Route::get('/crawler/crawlees/{urlId}','Crawler\CrawlController@getCrawlees');
 
-Route::get('/dashboard',['middleware'=>'auth', function (){
-	return view('pages.indexdashboard');
-}]);
+//Route::get('/dashboard',['middleware'=>'auth', function (){
+	//return view('pages.indexdashboard');
+//}]);
 
 /*---Objectives Management---*/
 //TODO: Refactor objectives method into ObjController
-Route::get('/objectives/site','Crawler\CrawlController@getListSites');
-Route::get('/objectives/site/list','Crawler\CrawlController@getListSites');
-Route::get('/objectives/site/get','Crawler\CrawlController@getListSites');
-Route::get('/objectives/site/get/{siteId}','Crawler\CrawlController@getSite');
-Route::get('/objectives/site/create','Crawler\CrawlController@getCreateSite');
-Route::post('/objectives/site/create','Crawler\CrawlController@postCreateSite');
-Route::get('/objectives/site/edit/{siteId}','Crawler\CrawlController@getEditSite');
-Route::post('/objectives/site/edit/{siteId}','Crawler\CrawlController@postEditSite');
-Route::get('/objectives/site/trashbin','Crawler\CrawlController@getDeletedSites');
-Route::get('/objectives/site/delete/{siteId}','Crawler\CrawlController@getDeleteSite');
+Route::group(['middleware'=>'auth'], function (){
+    Route::get('/dashboard','Crawler\DashboardController@getIndex');
+
+    Route::get('/objectives/site','Crawler\ObjectiveController@getListSites');
+    Route::get('/objectives/site/list','Crawler\ObjectiveController@getListSites');
+    Route::get('/objectives/site/get','Crawler\ObjectiveController@getListSites');
+    Route::get('/objectives/site/get/{siteId}','Crawler\ObjectiveController@getSite');
+    Route::get('/objectives/site/create','Crawler\ObjectiveController@getCreateSite');
+    Route::post('/objectives/site/create','Crawler\ObjectiveController@postCreateSite');
+    Route::get('/objectives/site/edit/{siteId}','Crawler\ObjectiveController@getEditSite');
+    Route::post('/objectives/site/edit/{siteId}','Crawler\ObjectiveController@postEditSite');
+    Route::get('/objectives/site/trashbin','Crawler\ObjectiveController@getDeletedSites');
+    Route::get('/objectives/site/delete/{siteId}','Crawler\ObjectiveController@getDeleteSite');
+});

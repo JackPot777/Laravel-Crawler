@@ -9,5 +9,6 @@
 <!-- jQuery custom content scroller -->
 <script src="/components/gentelella/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
 <!-- Custom Theme Scripts -->
+<script src="/components/gentelella/vendors/iCheck/icheck.min.js"></script>
 <script src="/components/gentelella/build/js/custom.min.js"></script>
 <script src="/resources/js/utility.js"></script>
