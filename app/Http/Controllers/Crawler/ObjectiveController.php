@@ -179,6 +179,7 @@ class ObjectiveController extends Controller
         $pass['sites'] = Site::all();
         return view('pages.url.create',$pass);
     }
+
     /**
      * Post Url creation.
      *
@@ -236,7 +237,7 @@ class ObjectiveController extends Controller
         return view('pages.url.trashbin',$pass);
     }
 
-    /**
+     /**
      * Soft delete  an url.
      *
      * @return \Illuminate\Http\Response
@@ -246,7 +247,40 @@ class ObjectiveController extends Controller
         $pass['url'] = Url::where('id',$urlId)->delete();
         return redirect('/objectives/url/trashbin');
     }
+ 
+    /**
+     * Force delete  an url.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function forceDeleteUrl(int $urlId)
+    {
+        $pass['url'] = Url::onlyTrashed()->where('id',$urlId)->forceDelete();
+        return redirect('/objectives/url/trashbin');
+    }
 
-    
+    /**
+     * Show all crawlee entries.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getCrawlees()
+    {
+        $pass['crawlees'] = Crawlee::paginate();
+        $pass['lastCrawlee'] = Crawlee::orderBy('created_at','desc')->first();
+        return view('pages.crawlee.list',$pass);
+    }
+
+    /**
+     * Get all  soft-deleted crawlee entries.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getDeletedCrawlees()
+    {
+        $pass['crawlees'] = Crawlee::onlyTrashed()->paginate();
+        $pass['lastCrawlee'] = Crawlee::onlyTrashed()->orderBy('updated_at','desc')->first();
+        return view('pages.crawlee.trashbin',$pass);
+    }
 
 }

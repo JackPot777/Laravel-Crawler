@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Crawlee extends Model
 {
+	use SoftDeletes;
 	protected $table = 'crawlees';
 	protected $date = 'deleted_at';
 
