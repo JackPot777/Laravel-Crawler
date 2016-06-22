@@ -54,7 +54,7 @@ Route::post('/user/register','Auth\AuthController@postRegister');
 //TODO: Refactor objectives method into ObjController
 Route::group(['middleware'=>'auth'], function (){
     Route::get('/dashboard','Crawler\DashboardController@getIndex');
-
+    /*--- Site CRUD ---*/
     Route::get('/objectives/site','Crawler\ObjectiveController@getListSites');
     Route::get('/objectives/site/list','Crawler\ObjectiveController@getListSites');
     Route::get('/objectives/site/get','Crawler\ObjectiveController@getListSites');
@@ -64,5 +64,22 @@ Route::group(['middleware'=>'auth'], function (){
     Route::get('/objectives/site/edit/{siteId}','Crawler\ObjectiveController@getEditSite');
     Route::post('/objectives/site/edit/{siteId}','Crawler\ObjectiveController@postEditSite');
     Route::get('/objectives/site/trashbin','Crawler\ObjectiveController@getDeletedSites');
-    Route::get('/objectives/site/delete/{siteId}','Crawler\ObjectiveController@getDeleteSite');
+    Route::get('/objectives/site/softdelete/{siteId}','Crawler\ObjectiveController@softDeleteSite');
+    Route::get('/objectives/site/forcedelete/{siteId}','Crawler\ObjectiveController@forceDeleteSite');
+
+    Route::get('/objectives/ajax/site/get/{siteId}','Crawler\ObjectiveController@getSiteJSON');
+    /*--- URL CRUD ---*/
+    Route::get('/objectives/url/list','Crawler\ObjectiveController@getUrls');
+    Route::get('/objectives/url/get/{urlId}','Crawler\ObjectiveController@getUrl');
+    Route::get('/objectives/url/create','Crawler\ObjectiveController@getCreateUrl');
+    Route::get('/objectives/url/create/{sideId}','Crawler\ObjectiveController@getCreateUrl');
+    Route::post('/objectives/url/create/','Crawler\ObjectiveController@postCreateUrl');
+    
+    Route::get('/objectives/url/trashbin','Crawler\ObjectiveController@getDeletedUrls');
+    Route::get('/objectives/url/softdelete/{urlId}','Crawler\ObjectiveController@softDeleteUrl');
+
+    /*--- Crawlee CRUD ---*/
+
+
+    /*--- CrawleeResult CRUD--*/
 });

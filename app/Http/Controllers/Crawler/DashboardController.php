@@ -27,7 +27,7 @@ class DashboardController extends Controller
         $pass['lastUrl']            = Url::orderBy('created_at','desc')->first();
         $pass['numTtlCrawlees']     = Crawlee::count();
         $pass['lastCreatedCrawlees']= Crawlee::orderBy('created_at','desc')->first();
-        $pass['numCreatedUrlCrawlees']= Crawlee::where('url_id',Crawlee::orderBy('created_at','desc')->first()->Url()->first()->id)->count();
+        $pass['numCreatedUrlCrawlees']= Crawlee::where('url_id',Crawlee::orderBy('created_at','desc')->first()->url()->first()->id)->count();
         $pass['numToBeDoneCrawlJobs']  = CrawleeResult::where('status','ToBeDone')->count();
         $pass['lastCreatedTBDCrawlJobs']  = CrawleeResult::where('status','ToBeDone')->orderBy('created_at','desc')->get();
         $pass['numProcessingCrawlJobs']  = CrawleeResult::where('status','Processing')->count();

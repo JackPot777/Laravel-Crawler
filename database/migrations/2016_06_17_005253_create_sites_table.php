@@ -5,7 +5,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateSitesTable extends Migration
 {
-	use SoftDeletes;
 	/**
      * Run the migrations.
      *
@@ -19,6 +18,7 @@ class CreateSitesTable extends Migration
             $table->string('desc');
             $table->string('root_url');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

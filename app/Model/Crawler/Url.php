@@ -5,11 +5,15 @@ namespace App\Model\Crawler;
 use App\Model\Crawler\Crawlee;
 use App\Utility;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Url extends Model
 {
-	protected $table = 'urls';
+	use SoftDeletes;
 
+	protected $table = 'urls';
+	protected $date = 'deleted_at';
+	protected $fillable =['name','original_url','type','settings','site_id'];
 	/**
 	 * Crawlee Generator
 	 * Rephase the settings and generate all of the crawlee url.
@@ -45,60 +49,73 @@ class Url extends Model
 	 *}
 	 **/
 
-	private function generateCrawlees(){
-		if ($this->type == 'Simple'){
+	private function generateCrawlees()
+	{
+		if ($this->type == 'Simple')
+		{
 			$crawlee = new Crawlee();
 			$crawlee->generated_url = $this->original_url;
 			$crawlee->url_id = $this->id;
 			$crawlee->save();
-		}else if($this->type == 'Simple_Custom'){
+		}else if($this->type == 'Simple_Custom')
+		{
 			$crawleeSettings = json_decode($this->settings,true);
 			$crawlees =  array();
 			//data array generation
 			$paramCombos = [];
 			$y=0;
-			foreach ($crawleeSettings['params'] as $param){
-				if ($param['type'] == 'number'){
-					for($i=$param['start'];$i<=$param['end'];$i++){
+			foreach ($crawleeSettings['params'] as $param)
+			{
+				if ($param['type'] == 'number')
+				{
+					for($i=$param['start'];$i<=$param['end'];$i++)
+					{
 						$paramCombos[$y][] = $i;
 					}
-				}else if ($param['type'] == 'string'){
+				}else if ($param['type'] == 'string')
+				{
 					$paramCombos[$y] = $param['combination'];
 				}
 				$y++;
 			}
 			unset($y);
 			$paramCombos = Utility::generateCombination($paramCombos);
-			foreach ($paramCombos as $paramCombo){
+			foreach ($paramCombos as $paramCombo)
+			{
 				$crawlee = new Crawlee();
 				$crawlee->url_id = $this->id;
 				$crawlee->generated_url = $this->original_url;
 				$i=0;
-				foreach ($paramCombo as $param){
+				foreach ($paramCombo as $param)
+				{
 					$crawlee->generated_url = str_replace('@param'.$i,$param,$crawlee->generated_url);
 					$i++;
 				}
 				unset($i);
 				$crawlees[] = $crawlee;
 			}
-			foreach ($crawlees as $crawlee){
+			foreach ($crawlees as $crawlee)
+			{
 				$crawlee->save();
 			}
 		}
 	}
 
-	public function save(array $options = []){
+	public function save(array $options = [])
+	{
 		$tmp = parent::save($options);
-		$this->generateCrawlees();
+		//$this->generateCrawlees();
 		return $tmp;
 	}
 
 
-	public function crawlee(){
+	public function crawlee()
+	{
 		return $this->hasMany('App\Model\Crawler\Crawlee','url_id','id');
 	}
 
-	public function site(){
+	public function site()
+	{
 		return $this->belongsTo('App\Model\Crawler\Site','site_id','id');
 	}
 }
