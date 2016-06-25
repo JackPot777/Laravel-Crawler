@@ -28,15 +28,18 @@
 	<div class="menu_section">
 	<h3> Crawler </h3>
 	<ul class="nav side-menu">
-	  <li><a href="{{url('/crawler/settings')}}"><i class="fa fa-edit"></i> Settings </a></li>
+	  <li><a href="{{url('/crawler/create')}}"><i class="fa fa-edit"></i> Create Entry </a></li>
+	  <li><a href="{{url('/crawler/list')}}"><i class="fa fa-edit"></i> Full List </a></li>
 	  <li><a><i class="fa fa-edit"></i> Crawl Jobs <span class="fa fa-chevron-down"></span></a>
 	  <ul class="nav child_menu">
-		<li><a href="{{url('/objectives/crawleeresult/create')}}">Create</a></li>
+		<li><a href="{{url('/job/create')}}">Create</a></li>
 		<li><a> Job Listing <span class="fa fa-chevron-down"></span></a>
 			<ul class="nav child_menu">
-				<li class="sub_menu"><a href="{{url('/objectives/crawleeresult/list/tobedone')}}">To Be Done(Not Timed)</a></li>
-				<li><a href="{{url('/objectives/crawleeresult/list/processing')}}">Scheduled</a></li>
-				<li><a href="{{url('/objectives/crawleeresult/list/completed')}}">Completed</a></li>
+				<li class="sub_menu">
+				<li><a href="{{url('/job/list/all')}}">All</a></li>
+				<li><a href="{{url('/job/list/tobedone')}}">To Be Done(Not Timed)</a></li>
+				<li><a href="{{url('/job/list/scheduled')}}">Scheduled</a></li>
+				<li><a href="{{url('/job/list/completed')}}">Completed</a></li>
 			</ul>
 		</li>
 		<li><a href="{{url('/objectives/crawleeresult/trashbin')}}">Show Trashbin</a></li>

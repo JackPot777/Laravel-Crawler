@@ -12,7 +12,10 @@
   <link href="/components/gentelella/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
   <link href="/components/gentelella/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
   <link href="/components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
-  <link href="/components/gentelella/production/css/maps/jquery-jvectormap-2.0.3.css" rel="stylesheet"/>
+  <link href="/components/gentelella/production/css/maps/jquery-jvectormap-2.0.3.css" rel="stylesheet">
   <link href="/components/gentelella/build/css/custom.min.css" rel="stylesheet">
+  <link href="/components/gentelella/vendors/ion.rangeSlider/css/ion.rangeSlider.css" rel="stylesheet">
+  <link href="/components/gentelella/vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" rel="stylesheet">
   <link href="/resources/css/custom.css" rel="stylesheet">
+  <link href="/components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 </head>

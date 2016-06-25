@@ -20,5 +20,7 @@
 			</div>
 		</div>
 		@include('includes.endloadscript')
+		@section('customScript')
+		@show
 	</body>
 </html>

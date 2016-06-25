@@ -49,65 +49,6 @@ class Url extends Model
 	 *}
 	 **/
 
-	private function generateCrawlees()
-	{
-		if ($this->type == 'Simple')
-		{
-			$crawlee = new Crawlee();
-			$crawlee->generated_url = $this->original_url;
-			$crawlee->url_id = $this->id;
-			$crawlee->save();
-		}else if($this->type == 'Simple_Custom')
-		{
-			$crawleeSettings = json_decode($this->settings,true);
-			$crawlees =  array();
-			//data array generation
-			$paramCombos = [];
-			$y=0;
-			foreach ($crawleeSettings['params'] as $param)
-			{
-				if ($param['type'] == 'number')
-				{
-					for($i=$param['start'];$i<=$param['end'];$i++)
-					{
-						$paramCombos[$y][] = $i;
-					}
-				}else if ($param['type'] == 'string')
-				{
-					$paramCombos[$y] = $param['combination'];
-				}
-				$y++;
-			}
-			unset($y);
-			$paramCombos = Utility::generateCombination($paramCombos);
-			foreach ($paramCombos as $paramCombo)
-			{
-				$crawlee = new Crawlee();
-				$crawlee->url_id = $this->id;
-				$crawlee->generated_url = $this->original_url;
-				$i=0;
-				foreach ($paramCombo as $param)
-				{
-					$crawlee->generated_url = str_replace('@param'.$i,$param,$crawlee->generated_url);
-					$i++;
-				}
-				unset($i);
-				$crawlees[] = $crawlee;
-			}
-			foreach ($crawlees as $crawlee)
-			{
-				$crawlee->save();
-			}
-		}
-	}
-
-	public function save(array $options = [])
-	{
-		$tmp = parent::save($options);
-		//$this->generateCrawlees();
-		return $tmp;
-	}
-
 
 	public function crawlee()
 	{

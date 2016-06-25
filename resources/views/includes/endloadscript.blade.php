@@ -10,5 +10,8 @@
 <script src="/components/gentelella/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
 <!-- Custom Theme Scripts -->
 <script src="/components/gentelella/vendors/iCheck/icheck.min.js"></script>
+<script type="text/javascript" src="/components/moment/min/moment.min.js"></script>
+<script type="text/javascript" src="/components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/components/gentelella/build/js/custom.min.js"></script>
+<script src="/components/gentelella/vendors/ion.rangeSlider/js/ion.rangeSlider.min.js"></script>
 <script src="/resources/js/utility.js"></script>

@@ -84,15 +84,17 @@ Route::group(['middleware'=>'auth'], function (){
     Route::get('/objectives/crawlee/softdelete/{crawleeId}','Crawler\ObjectiveController@softDeleteCrawlee');
     Route::get('/objectives/crawlee/forcedelete/{crawleeId}','Crawler\ObjectiveController@forceDeleteCrawlee');
     /*--- Crawler Settings ---*/
-    Route::get('/crawler/settings','Crawler\CrawlerController@getSettings');
-    Route::post('/crawler/settings','Crawler\CrawlerController@postSettings');
+    Route::get('/crawler/create','Crawler\CrawlerController@getCreateCrawler');
+    Route::post('/crawler/create','Crawler\CrawlerController@postCreateCrawler');
+    Route::get('/crawler/list','Crawler\CrawlerController@getListCrawler');
+    Route::post('/crawler/list','Crawler\CrawlerController@postListCrawler');
     /*--- Crawl Jobs CRUD--*/
-    Route::get('/crawler/job/new','Crawler\CrawlerController@getNewJob');
-    Route::post('/crawler/job/new','Crawler\CrawlerController@postNewJob');
-    Route::get('/crawler/job/list/','Crawler\CrawlerController@getJobs');
-    Route::get('/crawler/job/list/{status}','Crawler\CrawlerController@getJobs');
-    Route::get('/crawler/job/trashbin','Crawler\CrawlerController@getDeletedJobs');
-    Route::get('/crawler/job/softdelete/{crawleeResultId}','Crawler\CrawlerController@SoftDeleteCrawlee');
-    Route::get('/crawler/job/forcedelete/{crawleeResultId}','Crawler\CrawlerController@ForceDeleteCrawlee');
+    Route::get('/job/create','Crawler\CrawlerController@getCreateJob');
+    Route::post('/job/create','Crawler\CrawlerController@postCreateJob');
+    Route::get('/job/list/','Crawler\CrawlerController@getListJobs');
+    Route::get('/job/list/{status}','Crawler\CrawlerController@getListJobs');
+    Route::get('/job/trashbin','Crawler\CrawlerController@getDeletedJobs');
+    Route::get('/job/softdelete/{crawleeResultId}','Crawler\CrawlerController@SoftDeleteCrawlee');
+    Route::get('/job/forcedelete/{crawleeResultId}','Crawler\CrawlerController@ForceDeleteCrawlee');
     
 });

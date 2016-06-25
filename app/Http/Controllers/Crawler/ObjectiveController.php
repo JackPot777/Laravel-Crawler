@@ -269,6 +269,7 @@ class ObjectiveController extends Controller
         $pass['crawlees'] = Crawlee::paginate();
         $pass['lastCrawlee'] = Crawlee::orderBy('created_at','desc')->first();
         return view('pages.crawlee.list',$pass);
+
     }
 
     /**
