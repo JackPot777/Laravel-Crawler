@@ -18,8 +18,9 @@ class CreateCrawlersTable extends Migration
             $table->string('name')->nullable(false);
             $table->string('desc')->nullable(false);
             $table->boolean('isactivated')->default(false);
-            $table->integer('completedjobs')->default(0);
             $table->integer('maxinstances')->default(1);
+            $table->integer('url_id')->unsigned()->nullable();
+            $table->foreign('url_id')->references('id')->on('urls');
             $table->timestamps();
         });
     }

@@ -29,7 +29,6 @@
                                     <th class="column-title">Site Name</th>
                                     <th class="column-title">Url Name</th>
                                     <th class="column-title">Original Url</th>
-                                    <th class="column-title">Type</th>
                                     <th class="column-title">Last Modified</th>
                                     <th class="column-title no-link last"><span class="nobr">Action</span>
                                     </th>
@@ -43,31 +42,9 @@
                                     <td class=" ">{{$url->site()->first()->name}}</td>
                                     <td class=" ">{{$url->name}}</td>
                                     <td class=" ">{{$url->original_url}}</td>
-                                    <td class="">{{$url->type}}</td>
                                     <td class="">{{$url->updated_at}}</td>
                                     <td class=" last">
-									<div class="btn-group">
-				                      <a href="{{url('/objectives/url/get/'.$url->id)}}" class="btn btn-primary btn-xs">Show Weburl Details</a>
-				                      <button type="button" class="btn btn-xs btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-				                        <span class="caret"></span>
-				                        <span class="sr-only">Toggle Dropdown</span>
-				                      </button>
-				                      <ul class="dropdown-menu" role="menu">
-										<li>
-											<a href="#">Show All Generated Crawlees</a>
-				                        </li>
-										<li>
-											<a href="#">Show All Crawled Results</a>
-				                        </li>
-										<li>
-										<a href="{{url('/objectives/url/edit/'.$url->id)}}">Edit Url Structure</a>
-										</li>
-				                        <li class="divider"></li>
-										<li>
-										<a href="{{url('/objectives/url/softdelete/'.$url->id)}}">Delete</a>
-										</li>
-				                      </ul>
-				                    </div>
+									    <a class="btn btn-xs btn-danger" href="{{url('/objectives/url/forcedelete/'.$url->id)}}">Delete Forever</a>
                                     </td>
                                 </tr>
 								<?php $i++?>

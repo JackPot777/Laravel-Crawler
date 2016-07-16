@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Crawler;
 
 use Validator;
-
+use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Model\Crawler\Site;
@@ -12,6 +12,8 @@ use App\Model\Crawler\Crawlee;
 use App\Model\Crawler\CrawleeResult;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ObjectiveController extends Controller
 {
@@ -35,7 +37,7 @@ class ObjectiveController extends Controller
      */
     public function getSite(int $siteId)
     {
-        return Site::find($siteId);
+        return view('pages.site.detail',['site'=>Site::withTrashed()->find($siteId)]);
     }
     /**
      * Show a website details, including Urls, Crawlees, CrawleeResults.
@@ -67,8 +69,8 @@ class ObjectiveController extends Controller
     public function postCreateSite(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|min:10|max:255',
-            'desc' => 'required|min:10|max:2048',
+            'name' => 'required|min:1|max:255',
+            'desc' => 'required|min:1|max:2048',
             'root_url' => 'required|min:3|max:2028'
         ]);
         if ($validator->fails()){
@@ -86,8 +88,8 @@ class ObjectiveController extends Controller
     public function postEditSite(Request $request,int $siteId)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|min:10|max:255',
-            'desc' => 'required|min:10|max:2048',
+            'name' => 'required|min:1|max:255',
+            'desc' => 'required|min:1|max:2048',
             'root_url' => 'required|min:3|max:2028'
         ]);
         if ($validator->fails()){
@@ -105,7 +107,6 @@ class ObjectiveController extends Controller
         }
         return redirect('/objectives/site/list/');
     }
-
     /**
      * Website trashbin.
      *
@@ -129,37 +130,32 @@ class ObjectiveController extends Controller
        $deletedSite = Site::where('id',$siteId)->first()->delete();
        return redirect ('/objectives/site/trashbin');
     }
+    /**
+     * Restore a deleted website
+     *
+     * @param int $siteId site id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(int $siteId)
+    {
+        Site::withTrashed()->find($siteId)->restore();
+        return redirect('/objectives/site/list');
+    }
 
-
-    //TODO: NEED TO TEST AFTER URL / CRAWLEE / CRAWLEE CRUD COMPLETION
+    /**
+     * Force delete site.
+     *
+     * @param int $siteId site id
+     * @return \Illuminate\Http\Response
+     */
     public function forceDeleteSite(int $siteId)
     {
         $deletedSite = Site::onlyTrashed()->where('id',$siteId)->first();
-        //$deletedSite = Site::onlyTrashed()->where('id',$siteId)->first()->forceDelete();
-        // Site 1--* URL 1--* Crawlee 1--* CrawleeResult
-        $deletedSiteUrls = $deletedSite->url()->withTrashed()->get();
-        $deletedSiteCrawlees = [];
-        foreach ($deletedSiteUrls as $deletedSiteUrl)
+        foreach ($deletedSite->urls()->onlyTrashed()->get() as $url)
         {
-            $deletedSiteCrawlees[] = $deletedSiteUrl->crawlee()->withTrashed()->get();
+            $url->forceDelete();
         }
-        $deletedSiteCrawleeResults = [];
-        foreach ($deletedSiteCrawlees as $deletedSiteCrawlee)
-        {
-            $deletedSiteCrawleeResults[] = $deletedSiteCrawlee->crawleeResult()->withTrashed()->get();
-        }
-        foreach ($deletedSiteCrawleeResults as $deletedSiteCrawleeResult)
-        {
-            $deletedSiteCrawleeResult->forceDelete();
-        }
-        foreach ($deletedSiteCrawlees as $deletedSiteCrawlee)
-        {
-            $deletedSiteCrawlee->forceDelete();
-        }
-        foreach ($deletedSiteUrls as $deletedSiteUrl)
-        {
-            $deletedSiteUrl->forceDelete();
-        }
+        $deletedSite->forceDelete();
         return redirect ('/objectives/site/trashbin');
     }
 
@@ -188,16 +184,36 @@ class ObjectiveController extends Controller
      */
     public function postCreateUrl(Request $request)
     {
+        //Pharse request into JSON
+        $url = new Url();
+        $url['site_id'] = $request->all()['site_id'];
+        $url['name'] = $request->all()['name'];
+        $url['original_url'] = $request->all()['original_url'];
+        $url['settings'] = null;
+        $params = null;
+        foreach ($request->all() as $key=>$value)
+        {
+            if (preg_match('/^param[0-9]+$/i', $key))
+            {
+                if ($params == null) {$param = [];}
+                $params[$key] = $request->all()[$key];
+                if ($params[$key]['type'] == 'string')
+                {
+                    $params[$key]['combination'] = mb_split(';',$params[$key]['combination']);
+                }
+            }
+        }
+        $url['settings'] = json_encode($params);
+        $url->save();
+        //Url Generation
         $validator = Validator::make($request->all(), [
             'site_id' => 'required|exists:sites,id',
             'name' => 'required|min:10|max:255',
-            'original_url' => 'required|min:10|max:2048',
-            'type' => 'required|in:Simple,Simple_Custom'
+            'original_url' => 'required|min:10|max:2048'
         ]);
         if ($validator->fails()){
             return redirect('/objectives/url/create')->withErrors($validator)->withInput();
         }
-        $url = Url::create($request->all());
         return redirect('/objectives/url/get/'.$url->id);
     }
 
@@ -220,9 +236,35 @@ class ObjectiveController extends Controller
      */
     public function getUrl(int $urlId)
     {
-        $pass['url'] = Url::withTrashed()->where('id',$urlId)->get();
-        return $pass['url'];
+        $pass['url'] = Url::withTrashed()->where('id',$urlId)->first();
         return view('pages.url.detail',$pass);
+    }
+
+    /**
+     * Show generated url list.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getGeneratedUrls(int $urlId)
+    {
+        $pass['urlId'] = $urlId;
+        $paths = Url::withTrashed()->where('id',$urlId)->first()->getGeneratedUrls();
+        $pass['generatedUrls'] = [];
+        $i = 0;
+        foreach ($paths as $path)
+        {
+            $newPath['id'] = ++$i;
+            $newPath['path'] = $path;
+            $pass['generatedUrls'][] = $newPath;
+        }
+        unset($i);
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $col = new Collection($pass['generatedUrls']);
+        $perPage = 100;
+        $currentPageSearchResults = $col->slice(($currentPage - 1) * $perPage, $perPage)->all();
+        $pass['entries'] = new LengthAwarePaginator($currentPageSearchResults, count($col), $perPage);
+        $pass['entries']->setPath('/objectives/url/generate/'.$urlId);
+        return view('pages.url.generated',$pass);
     }
 
     /**
@@ -247,7 +289,7 @@ class ObjectiveController extends Controller
         $pass['url'] = Url::where('id',$urlId)->delete();
         return redirect('/objectives/url/trashbin');
     }
- 
+
     /**
      * Force delete  an url.
      *
@@ -257,6 +299,17 @@ class ObjectiveController extends Controller
     {
         $pass['url'] = Url::onlyTrashed()->where('id',$urlId)->forceDelete();
         return redirect('/objectives/url/trashbin');
+    }
+
+    /**
+     * Force delete  an url.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function restoreUrl(int $urlId)
+    {
+        $pass['url'] = Url::onlyTrashed()->where('id',$urlId)->restore();
+        return redirect('/objectives/url/list');
     }
 
     /**

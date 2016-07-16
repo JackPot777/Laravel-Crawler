@@ -79,5 +79,6 @@
 $('#scheduled_datetime').datetimepicker({
 minDate: new Date(),
 format: 'Y-MM-DD HH:mm:ss'});
+
 </script>
 @stop

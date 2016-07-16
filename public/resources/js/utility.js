@@ -29,3 +29,6 @@ function getSite(siteId){
 		}
 	});
 }
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+});

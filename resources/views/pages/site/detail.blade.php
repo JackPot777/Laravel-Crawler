@@ -1,40 +1,46 @@
 @extends('master.dashboard')
-@section('title','Web Crawler Panel - Url - ' . $url->name)
+@section('title','Web Crawler Panel - Site - ' . $site->name)
 @section('bodyContent')
 <!-- page content -->
 <div class="right_col" role="main">
 	<div class="page-title">
 		<div class="title_left">
-			<h3>Url <small> Details</small></h3>
+			<h3>Site <small> Details</small></h3>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1 col-xs-12">
 			<div class="x_panel">
 				<div class="x_title">
-					<h2> Parent Website <small>Created at: {{$url->site()->first()->created_at}} Last updated at: {{$url->site()->first()->updated_at}}</small></h2>
+					<h2> Website <small>Created at: {{$site->created_at}} Last updated at: {{$site->updated_at}}</small></h2>
 					<div class="clearfix"></div>
 				</div>
 				<div class="x_content">
 					<div class="row">
 						<div class="col-xs-12">
-							<p class="lead">{{$url->site()->first()->name}}</p>
+							<p class="lead">{!! $site->trashed()?'<label class="label label-warning">Trashed</label>':'' !!} {{$site->name}}</p>
 							<table class="table table-striped">
 							  <tbody>
 								<tr>
 								  <th width="20%">Website ID</th>
-								  <td>{{$url->site()->first()->id}}</td>
+								  <td>{{$site->id}}</td>
 								</tr>
 								<tr>
 								  <th>Root Url</th>
-								  <td>{{$url->site()->first()->root_url}}</td>
+								  <td>{{$site->root_url}}</td>
 								</tr>
 								<tr>
 								  <th>Description</th>
-								  <td>{{$url->site()->first()->desc}}</td>
+								  <td>{{$site->desc}}</td>
 								</tr>
 							  </tbody>
 							</table>
+						</div>
+					</div>
+					<div class="row no-print">
+						<div class="col-xs-12">
+						  <a href="{{url('/objectives/site/forcedelete/'.$site->id)}}" class="btn btn-danger pull-right" style="margin-right: 5px;"><i class="fa fa-remove"></i> Force Delete</a>
+						  <a href="{{url('/objectives/site/restore/'.$site->id)}}" class="btn btn-success pull-right" style="margin-right: 5px;"><i class="fa fa-save"></i> Restore</a>
 						</div>
 					</div>
 				</div>
@@ -42,17 +48,18 @@
 		</div>
 		<br>
 	</div>
+@foreach ($site->urls()->withTrashed()->get() as $url)
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1 col-xs-12">
 			<div class="x_panel">
 				<div class="x_title">
-					<h2> Url Structure <small>Created at: {{$url->site()->first()->created_at}} Last updated at: {{$url->updated_at}}</small></h2>
+					<h2> Url Structure <small>Created at: {{$url->created_at}} Last updated at: {{$url->updated_at}}</small></h2>
 					<div class="clearfix"></div>
 				</div>
 				<div class="x_content">
 					<div class="row">
 						<div class="col-xs-12">
-							<p class="lead">{{$url->name}}</p>
+							<p class="lead">{!!$url->trashed()?'<label class="label label-warning">Trashed</label>':''!!} {{$url->name}} </p>
 							<table class="table table-striped">
 							  <tbody>
 								<tr>
@@ -98,7 +105,12 @@
 					<div class="row no-print">
 						<div class="col-xs-12">
 						  <a href="{{url('/objectives/url/generate/'.$url->id)}}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Show Generated Urls</a>
-						  <button class="btn btn-danger pull-right" style="margin-right: 5px;"><i class="fa fa-remove"></i> Delete</button>
+						@if ($url->trashed())
+						  <a href="{{url('/objectives/url/forcedelete/'.$url->id)}}" class="btn btn-danger pull-right" style="margin-right: 5px;"><i class="fa fa-remove"></i> Force Delete</a>
+						  <a href="{{url('/objectives/url/restore/'.$url->id)}}" class="btn btn-success pull-right" style="margin-right: 5px;"><i class="fa fa-save"></i> Restore</a>
+						@else
+						  <a href="{{url('/objectives/url/softdelete/'.$url->id)}}" class="btn btn-danger pull-right" style="margin-right: 5px;"><i class="fa fa-remove"></i> Soft Delete</a>
+						@endif
 						</div>
 					  </div>
 					</div>
@@ -106,6 +118,7 @@
 		</div>
 		<br>
 	</div>
+@endforeach
 </div>
 <!-- page content -->
 @stop

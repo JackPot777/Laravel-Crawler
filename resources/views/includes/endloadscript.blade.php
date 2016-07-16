@@ -14,4 +14,5 @@
 <script type="text/javascript" src="/components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/components/gentelella/build/js/custom.min.js"></script>
 <script src="/components/gentelella/vendors/ion.rangeSlider/js/ion.rangeSlider.min.js"></script>
+<script src="/components/gentelella/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
 <script src="/resources/js/utility.js"></script>

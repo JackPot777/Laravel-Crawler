@@ -14,5 +14,14 @@ class Crawler extends Model
         return new AsyncCrawler($this->header,$this->job);
     }
 
+    public function url()
+    {
+        return $this->belongsTo('App\Model\Crawler\Url','url_id','id');
+    }
+
+    public function isRemovable()
+    {
+        return !$this->isactivated&&$this->url()->first()==null;
+    }
     protected $fillable = ['name','desc','maxinstances'];
 }

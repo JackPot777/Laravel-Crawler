@@ -13,4 +13,14 @@ class CrawlJob extends Model
     {
         return $this->belongsTo('App\Model\Crawler\Job','job_id','id');
     }
+
+    public function crawl()
+    {
+        $domHtml = HtmlDomParser::file_get_html($this->url);
+        $this->html_content = ''.$dom;
+        $this->html_title 	= ''.$dom->find('title')[0]->plaintext;
+        $this->iscompleted = true;
+        $this->save();
+    }
+
 }

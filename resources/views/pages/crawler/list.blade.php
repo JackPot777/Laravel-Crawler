@@ -12,11 +12,23 @@
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
 				<div class="x_title">
-					<h2>Crawler Lists <small>Last created at {{$lastCrawler->created_at}}</small></h2>
+					<h2>Crawler Lists
+						@if (isset($lastCrawler))
+							<small>Last created at {{$lastCrawler->created_at}}</small>
+						@endif
+					</h2>
 					<div class="clearfix"></div>
 				</div>
 				<div class="x_content" style="display: block;">
 					<div class="table-responsive">
+						@if (count ($errors))
+							<div class="row">
+							@foreach ($errors as $error)
+								<div class="alert alert-danger">{{$error}}</div>
+							@endforeach
+							</div>
+						@endif
+						@if (count ($crawlers))
 						<table class="table table-striped jambo_table bulk_action">
 							<thead>
 								<tr class="headings">
@@ -25,7 +37,7 @@
 									<th class="column-title">Description</th>
 									<th class="column-title">Activated</th>
 									<th class="column-title">MaxInstances</th>
-									<th class="column-title">CompletedJobs</th>
+									<th class="column-title">Current Job</th>
 									<th class="column-title">Last Modified</th>
 									<th class="column-title no-link last"><span class="nobr">Action</span>
 									</th>
@@ -38,33 +50,16 @@
 									<td class=" ">{{$crawler->id}}</td>
 									<td class=" ">{{$crawler->name}}</td>
 									<td class=" ">{{$crawler->desc}}</td>
-									<td class="">{{$crawler->isactivated}}</td>
+									<td class="">{!!$crawler->isactivated?'<span class="label label-success"><span class="fa fa-toggle-on"></span> ON</span>':'<span class="label label-danger"><span class="fa fa-toggle-off"></span> OFF</span>'!!}</td>
 									<td class=" ">{{$crawler->maxinstances}}</td>
-									<td class="">{{$crawler->completedjobs}}</td>
+									<td class="">{!!$crawler->url()->first()==null?'<span class="label label-danger">None</span>':'<span class="label label-success">'.$crawler->url()->first()->name.'</span>'!!}</td>
 									<td class="">{{$crawler->updated_at}}</td>
 									<td class=" last">
-									<div class="btn-group">
-									  <a href="{{url('/objectives/crawler/get/'.$crawler->id)}}" class="btn btn-primary btn-xs">Show Webcrawler Details</a>
-									  <button type="button" class="btn btn-xs btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-										<span class="caret"></span>
-										<span class="sr-only">Toggle Dropdown</span>
-									  </button>
-									  <ul class="dropdown-menu" role="menu">
-										<li>
-											<a href="#">Show All Generated Crawlees</a>
-										</li>
-										<li>
-											<a href="#">Show All Crawled Results</a>
-										</li>
-										<li>
-										<a href="{{url('/objectives/crawler/edit/'.$crawler->id)}}">Edit crawler Structure</a>
-										</li>
-										<li class="divider"></li>
-										<li>
-										<a href="{{url('/objectives/crawler/softdelete/'.$crawler->id)}}">Delete</a>
-										</li>
-									  </ul>
-									</div>
+									@if ($crawler->isRemovable())
+										<a class="btn btn-xs btn-danger" href="{{url('crawler/delete/'.$crawler->id)}}">Remove</a>
+									@else
+										<span class="label label-info">In Process</span>
+									@endif
 									</td>
 								</tr>
 								<?php $i++?>
@@ -72,6 +67,9 @@
 								<?php unset($i) ?>
 							</tbody>
 						</table>
+						@else
+							<div class="alert alert-success" role="alert">Empty crawler records.</div>
+						@endif
 					</div>
 				</div>
 				<center>

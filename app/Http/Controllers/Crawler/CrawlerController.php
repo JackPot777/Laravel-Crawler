@@ -55,6 +55,28 @@ class CrawlerController extends Controller
     }
 
     /**
+     * Remove a crawler by crawler_id
+     *
+     * @param int $id crawler_id
+     * @return \Illuminate\Http\Response
+     */
+    public function getRemoveCrawler(int $id)
+    {
+        $crawler = Crawler::find($id);
+        $errors = [];
+        if ($crawler == null)
+        {
+            $errors[] = 'The crawler does not exists.';
+        }else if (!$crawler->isRemovable())
+        {
+            $errors[] = 'The crawler is not removable due to working on a job.';
+        }else {
+            $crawler->forceDelete();
+        }
+        return redirect('/crawler/list/')->with(['errors'=>$errors]);
+    }
+
+    /**
      * Create new job.
      *
      * @return \Illuminate\Http\Response

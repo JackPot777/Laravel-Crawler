@@ -19,3 +19,18 @@
 .form-group input[type="checkbox"]:checked + .btn-group > label span:last-child {
 	display: none;   
 }
+.bootstrap-datetimepicker-widget.dropdown-menu{
+	width:22em !important;
+}
+.table-responsive{
+	overflow-x:visible !important;
+	overflow-y:visible !important;
+}
+.tag:after{
+	border-top: none;
+	border-bottom: none;
+	border-left: none;
+}
+.tagsinput input{
+	width:auto !important;
+}

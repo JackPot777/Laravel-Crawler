@@ -37,26 +37,25 @@
                         <div class="form-group">
                             <label class="control-label col-md-2 col-sm-2 col-xs-12">Name</label>
                             <div class="col-md-10 col-sm-10 col-xs-12">
-                                <input type="text" name="name" class="form-control" placeholder="Source Website Name">
+                                <input type="text" name="name" class="form-control" value="{{old('name')}}" placeholder="Source Website Name">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-2 col-sm-2 col-xs-12">Root Url</label>
                             <div class="col-md-10 col-sm-10 col-xs-12">
-                                <input type="text" name="root_url" class="form-control" placeholder="http://www.google.com">
+                                <input type="text" name="root_url" class="form-control" value="{{old('root_url')}}" placeholder="http://www.google.com">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-2 col-sm-2 col-xs-12">Description</label>
                             <div class="col-md-10 col-sm-10 col-xs-12">
-                                <input type="text" name="desc" class="form-control" placeholder="Website description">
+                                <input type="text" name="desc" class="form-control" value="{{old('desc')}}" placeholder="Website description">
                             </div>
                         </div>
                         <div class="ln_solid"></div>
                         <div class="form-group">
-                            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                <button type="submit" class="btn btn-primary">Cancel</button>
-                                <button type="submit" class="btn btn-success">Submit</button>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <button type="submit" class="btn btn-success pull-right">Submit</button>
                             </div>
                         </div>
 
