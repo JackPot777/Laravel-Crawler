@@ -5,77 +5,99 @@
 <div class="right_col" role="main">
 	<div class="page-title">
 		<div class="title_left">
-			<h3>Job Status<small> {{$job->name}}</small></h3>
+			<h3>Job <small> Details </small></h3>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
 				<div class="x_title">
-					<h2>All Crawl Jobs<small>Last updated at {{$last->updated_at}}</small></h2>
+					<h2>Job Status<small>Created at:{{$job->created_at}} Last updated at: {{$job->updated_at}}</small></h2>
 					<div class="clearfix"></div>
 				</div>
-				<div class="x_content" style="display: block;">
-					<div class="table-responsive">
-						<table class="table table-striped jambo_table bulk_action">
-							<thead>
-								<tr class="headings">
-									<th class="column-title">CrawlJobID</th>
-									<th class="column-title">CrawlerID</th>
-									<th class="column-title">UrlID</th>
-									<th class="column-title">Scheduled Datetime</th>
-									<th class="column-title">Completed Datetime</th>
-									<th class="column-title">Last Modified</th>
-									<th class="column-title no-link last"><span class="nobr">Action</span>
-									</th>
+				<div class="x_content">
+					<div class="row">
+						<div class="col-xs-12">
+							<p class="lead">{{$job->name}}</p>
+							<table class="table table-striped">
+							  <tbody>
+								<tr>
+								  <th width="20%">Job ID</th>
+								  <td>{{$job->id}}</td>
 								</tr>
-							</thead>
-							<tbody>
-								<?php $i=0?>
-								@foreach ($jobs as $job)
-								<tr class="{{$i%2?'even':'odd'}} pointer">
-									<td class=" ">{{$job->id}}</td>
-									<td class=" ">{{$job->name}}</td>
-									<td class=" ">{{$job->crawler_id}}</td>
-									<td class=" ">{{$job->url_id}}</td>
-									<td class=" ">{{$job->scheduled_datetime}}</td>
-									<td class=" ">{{$job->completed_datetime}}</td>
-									<td class="">{{$job->updated_at}}</td>
-									<td class=" last">
-									<div class="btn-group">
-									  <a href="" class="btn btn-primary btn-xs">Show Webcrawler Details</a>
-									  <button type="button" class="btn btn-xs btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-										<span class="caret"></span>
-										<span class="sr-only">Toggle Dropdown</span>
-									  </button>
-									  <ul class="dropdown-menu" role="menu">
-										<li>
-											<a href="#">Show All Generated Crawlees</a>
-										</li>
-										<li>
-											<a href="#">Show All Crawled Results</a>
-										</li>
-										<li>
-										<a href="">Edit crawler Structure</a>
-										</li>
-										<li class="divider"></li>
-										<li>
-										<a href="">Delete</a>
-										</li>
-									  </ul>
-									</div>
-									</td>
+								<tr>
+								  <th>Status</th>
+								  <td>{{$job->status}}</td>
 								</tr>
-								<?php $i++?>
-								@endforeach
-								<?php unset($i) ?>
-							</tbody>
-						</table>
+								<tr>
+								  <th>Scheduled Datetime</th>
+								  <td>{{$job->scheduled_datetime}}</td>
+								</tr>
+								<tr>
+								  <th>Completed Datetime</th>
+								  <td>{{$job->completed_datetime}}</td>
+								</tr>
+								<tr>
+								  <th>Url</th>
+								  <td><a href="{{url('/objectives/url/get/'.$job->url()->first()->id)}}">#{{$job->url()->first()->id}}:{{$job->url()->first()->name}}</a></td>
+								</tr>
+								<tr>
+								  <th>Crawler</th>
+								  <td>#{{$job->crawler()->first()->id}}:{{$job->crawler()->first()->name}}</td>
+								</tr>
+							  </tbody>
+							</table>
+						</div>
 					</div>
 				</div>
-				<center>
-					{!! $jobs ->render() !!}
-				</center>
+			</div>
+		</div>
+		<br>
+	</div>
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Crawl Jobs <small></small></h2>
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content">
+					<div class="row">
+						<div class="col-xs-12">
+							<p class="lead">{{$job->name}}</p>
+							<table class="table table-striped">
+							  <tbody>
+								<tr>
+								  <th width="20%">Total Crawl Jobs</th>
+								  <td>{{$job->crawlJobs()->count()}}</td>
+								</tr>
+								<tr>
+								  <th>Status</th>
+								  <td>
+									<div class="progress">
+										<div class="progress-bar progress-bar-success"  style="min-width:5em;width: {{(int) $job->crawlJobs()->where('iscompleted',1)->count()/$job->crawlJobs()->count() }}%;">
+											{{$job->crawlJobs()->where('iscompleted',1)->count()}}/
+											{{$job->crawlJobs()->count()}}
+										</div>
+									</div>
+								  </td>
+								</tr>
+							  </tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row no-print">
+						<div class="col-xs-12">
+						  <a href="{{url('/crawljob/get/'.$job->id)}}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Show Crawl Job List</a>
+						@if (!$job->isActivated())
+						  <button class="btn btn-success pull-right" style="margin-right: 5px;"><i class="fa fa-start"></i> Start</button>
+						  <button class="btn btn-danger pull-right" style="margin-right: 5px;"><i class="fa fa-remove"></i> delete</button>
+@else
+						  <button class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-pause"></i> Pause</button>
+@endif
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<br>

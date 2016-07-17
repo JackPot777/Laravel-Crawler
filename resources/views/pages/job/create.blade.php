@@ -51,16 +51,15 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-2 col-sm-2 col-xs-12">Scheduled Datetime</label>
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12">Earliest Start Datetime</label>
                             <div class="col-md-10 col-sm-10 col-xs-12">
                                 <input id="scheduled_datetime" type="text" class="form-control" name="scheduled_datetime" >
                             </div>
                         </div>
                         <div class="ln_solid"></div>
                         <div class="form-group">
-                            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                <button type="submit" class="btn btn-success">Submit</button>
-                                <button type="cancel" class="btn btn-primary">Cancel</button>
+                            <div class="col-xs-12">
+                                <button type="submit" class="pull-right btn btn-success">Schedule New Job</button>
                             </div>
                         </div>
 

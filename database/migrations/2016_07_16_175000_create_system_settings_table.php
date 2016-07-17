@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCrawleesTable extends Migration
+class CreateSystemSettingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,10 @@ class CreateCrawleesTable extends Migration
      */
     public function up()
     {
-        Schema::create('crawlees',function (Blueprint $table){
+        Schema::create('system_settings',function (Blueprint $table) 
+        {
             $table->increments('id');
-            $table->text('generated_url');
-			$table->integer('url_id')->unsigned();
-            $table->foreign('url_id')->references('id')->on('urls');
-            $table->timestamps();
-            $table->softDeletes();
+            $table->boolean('allowregister')->default(true);
         });
     }
 
@@ -29,6 +26,6 @@ class CreateCrawleesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('crawlees');
+        Schema::drop('system_settings');
     }
 }

@@ -9,7 +9,7 @@
 | It's a breeze. Simply tell Laravel the URIs it should respond to
 | and give it the controller to call when that URI is requested.
 |
-*/
+ */
 
 Route::get('/user','Auth\AuthController@getLogin');
 Route::get('/','Auth\AuthController@getLogin');
@@ -62,12 +62,17 @@ Route::group(['middleware'=>'auth'], function (){
     Route::get('/crawler/list','Crawler\CrawlerController@getListCrawler');
     Route::post('/crawler/list','Crawler\CrawlerController@postListCrawler');
     Route::get('/crawler/delete/{id}','Crawler\CrawlerController@getRemoveCrawler');
-    /*--- Crawl Jobs CRUD--*/
+    /*--- Jobs CRUD--*/
     Route::get('/job/create','Crawler\CrawlerController@getCreateJob');
     Route::post('/job/create','Crawler\CrawlerController@postCreateJob');
     Route::get('/job/list/','Crawler\CrawlerController@getListJobs');
+    Route::get('/job/get/{jobId}','Crawler\CrawlerController@getJob');
     Route::get('/job/list/{status}','Crawler\CrawlerController@getListJobs');
-    Route::get('/job/trashbin','Crawler\CrawlerController@getDeletedJobs');
-    Route::get('/job/softdelete/{crawleeResultId}','Crawler\CrawlerController@SoftDeleteCrawlee');
-    Route::get('/job/forcedelete/{crawleeResultId}','Crawler\CrawlerController@ForceDeleteCrawlee');
+    Route::get('/job/start/{jobId}','Crawler\CrawlerController@getStartJob');
+    Route::get('/job/pause/{jobId}','Crawler\CrawlerController@getPauseJob');
+    Route::get('/job/delete/{jobId}','Crawler\CrawlerController@getDeleteJob');
+    /*--- Crawl Jobs CRUD --*/
+    Route::get('/crawljob/list','Crawler\CrawlerController@getCrawlJobs');
+    Route::get('/crawljob/get/{jobId}','Crawler\CrawlerController@getCrawlJob');
+    Route::get('/crawljob/rawhtml/{crawlJobId}','Crawler\CrawlerController@getCrawlJobHtml');
 });

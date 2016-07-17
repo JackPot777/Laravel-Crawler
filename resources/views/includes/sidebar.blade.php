@@ -35,37 +35,34 @@
 			<ul class="nav child_menu">
 				<li class="sub_menu">
 				<li><a href="{{url('/job/list/all')}}">All</a></li>
-				<li><a href="{{url('/job/list/tobedone')}}">To Be Done(Not Timed)</a></li>
+				<li><a href="{{url('/job/list/tobedone')}}">To Be Done</a></li>
 				<li><a href="{{url('/job/list/scheduled')}}">Scheduled</a></li>
 				<li><a href="{{url('/job/list/completed')}}">Completed</a></li>
 			</ul>
 		</li>
-		<li><a href="{{url('/objectives/crawleeresult/trashbin')}}">Show Trashbin</a></li>
 	  </ul>
 	  </li>
-	  <li><a><i class="fa fa-edit"></i> Raw Data <span class="fa fa-chevron-down"></span></a>
+	  <li><a><i class="fa fa-edit"></i> Raw Data Crawl Job <span class="fa fa-chevron-down"></span></a>
 	  <ul class="nav child_menu">
-		<li><a href="{{url('/crawler/rawdata/list')}}">Full List</a></li>
-		<li><a href="{{url('/crawler/rawdata/trashbin')}}">Show Trashbin</a></li>
+		<li><a href="{{url('/crawljob/list')}}">Full List</a></li>
 	  </ul>
 	  </li>
 	</ul>
 	</div>
-	</ul>
   </div>
 </div>
 <!-- /sidebar menu -->
 
 <!-- /menu footer buttons -->
 <div class="sidebar-footer hidden-small">
-  <a data-toggle="tooltip" data-placement="top" title="Settings">
+  <a href="{{url('/system/setting')}}" data-toggle="tooltip" data-placement="top" title="Settings">
 	<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
   </a>
   <a href="javascript:requestFullScreen(document.documentElement);" data-toggle="tooltip" data-placement="top" title="FullScreen">
 	<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
   </a>
-  <a href="#//todo" data-toggle="tooltip" data-placement="top" title="Lock">
-	<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+  <a href="{{url('/user/profile')}}" data-toggle="tooltip" data-placement="top" title="Profile">
+	<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
   </a>
   <a href="/user/logout" data-toggle="tooltip" data-placement="top" title="Logout">
 	<span class="glyphicon glyphicon-off" aria-hidden="true"></span>

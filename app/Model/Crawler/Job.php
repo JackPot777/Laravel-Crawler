@@ -17,57 +17,29 @@ class Job extends Model
     {
         return $this->belongsTo('App\Model\Crawler\Url','url_id','id');
     }
-
+    public function crawlJobs()
+    {
+        return $this->hasMany('App\Model\Crawler\CrawlJob','job_id','id');
+    }
+    public function isActivated()
+    {
+        return $this->crawler()->first()->isactivated;
+    }
+    public function activate()
+    {
+        $crawler = $this->crawler()->first();
+        $crawler->isactivate = true;
+        $crawler->start();
+    }
     private function generateCrawlJobs()
     {
         $url = $this->url()->first();
-        if ($this->type == 'Simple')
+        foreach ($url->getGeneratedUrls() as $url)
         {
             $crawlJob = new CrawlJob();
-            $crawlJob->url = $url->original_url;
+            $crawlJob->url = $url;
             $crawlJob->job_id = $this->id;
             $crawlJob->save();
-        }else if($this->type == 'Simple_Custom')
-        {
-            $crawlSettings = json_decode($this->settings,true);
-            $crawlJobs =  array();
-            //data array generation
-            $paramCombos = [];
-            $y=0;
-            foreach ($crawlSettings['params'] as $param)
-            {
-                if ($param['type'] == 'number')
-                {
-                    for($i=$param['start'];$i<=$param['end'];$i++)
-                    {
-                        $paramCombos[$y][] = $i;
-                    }
-                }else if ($param['type'] == 'string')
-                {
-                    $paramCombos[$y] = $param['combination'];
-                }
-                $y++;
-            }
-            unset($y);
-            $paramCombos = Utility::generateCombination($paramCombos);
-            foreach ($paramCombos as $paramCombo)
-            {
-                $crawlJob = new crawlJob();
-                $crawlJob->url_id = $url->id;
-                $crawlJob->generated_url = $this->original_url;
-                $i=0;
-                foreach ($paramCombo as $param)
-                {
-                    $crawlJob->generated_url = str_replace('@param'.$i,$param,$crawlJob->generated_url);
-                    $i++;
-                }
-                unset($i);
-                $crawlJobs[] = $crawlJob;
-            }
-            foreach ($crawlJobs as $crawlJob)
-            {
-                $crawlJob->save();
-            }
         }
     }
 

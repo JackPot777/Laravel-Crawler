@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Model\Crawler\Crawler;
 use App\Model\Crawler\Job;
+use App\Model\Crawler\CrawlJob;
 use App\Model\Crawler\Url;
 class CrawlerController extends Controller
 {
@@ -96,19 +97,21 @@ class CrawlerController extends Controller
     public function postCreateJob(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'name' => 'required|min:5|max:255',
+            'name' => 'required|min:3|max:255',
             'scheduled_datetime' => 'date',
-            'crawler_id' => 'required|',
+            'crawler_id' => 'required|exists:crawlers,id',
         ]);
         $validator->after(function($validator) use ($request)
         {
             $crawler_id  = $request->crawler_id;
             $crawler = Crawler::find($crawler_id);
-            if ($crawler->isactivated)
+            if ($crawler==null)
+            {
+                $validator->errors()->add('crawler_id','The crawler is missing. Please select a new one.');
+            }else if ($crawler->isactivated)
             {
                 $validator->errors()->add('crawler_id','The crawler is in use. Please choose another one.');
             }
-
         });
         if ($validator->fails())
         {
@@ -119,6 +122,55 @@ class CrawlerController extends Controller
         return redirect('/job/list');
     }
 
+    /**
+     * Delete a current job which is not activated.
+     *
+     * @param int $jobId job id
+     * @return \Illuminate\Http\Response
+     */
+    public function getDeleteJob(int $jobId)
+    {
+        $job = Job::find($jobId);
+        $errors = [];
+        if ($job->isActivated())
+        {
+            $errors = ['The job is activated. Please dis-activated before delete.'];
+        }else
+        {
+            foreach ($job->crawlJobs()->get() as $crawlJob)
+            {
+                $crawlJob->delete();
+            }
+            $job->delete();
+        }
+        return redirect('/job/list')->with('errors',$errors);
+    }
+
+    /**
+     * Start the job.
+     *
+     * @param int $jobId job id
+     * @return \Illuminate\Http\Response
+     */
+    public function getStartJob(int $jobId)
+    {
+        $job = Job::find($jobId);
+        $errors = [];
+        if ($job->isActivated())
+        {
+            $errors = ['The job is already activated.'];
+        }else
+        {
+            $job->start();
+        }
+        return redirect('/job/get/'.$jobId)->with('errors',$errors);
+    }
+    /**
+     * List all jobs based on the status.
+     *
+     * @param string $status : all null tobedone scheduled completed
+     * @return \Illuminate\Http\Response
+     */
     public function getListJobs(string $status=null)
     {
         switch ($status){
@@ -138,5 +190,55 @@ class CrawlerController extends Controller
         $pass['last'] = Job::orderBy('updated_at','desc')->first();
         return view('pages.job.list',$pass);
     }
+    /**
+     * Get the job details.
+     *
+     * @param int $jobId job id.
+     * @return \Illuminate\Http\Response
+     */
+    public function getJob(int $jobId)
+    {
+        $pass['job'] = Job::find($jobId);
+        return view('pages.job.detail',$pass);
+    }
 
+    /**
+     * List crawl jobs.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getCrawlJobs()
+    {
+        $pass['crawlJobs'] = CrawlJob::paginate(200);
+        return view('pages.crawljob.listall',$pass);
+    }
+    /**
+     * Get crawl jobs of a job.
+     *
+     * @param int $jobId
+     * @return \Illuminate\Http\Response
+     */
+    public function getCrawlJob(int $jobId)
+    {
+        $pass['crawlJobs'] = CrawlJob::where('job_id',$jobId)->paginate(200);
+        return view('pages.crawljob.list',$pass);
+    }
+    /**
+     * Get a crawl job html.
+     *
+     * @param int $crawlJobId Crawl Job Id
+     * @return \Illuminate\Http\Response
+     */
+    public function getCrawlJobHtml(int $crawlJobId)
+    {
+        $crawlJob = CrawlJob::find($crawlJobId);
+        if ($crawlJob != null)
+        {
+            $html     = $crawlJob->html_content;
+            return response($html,200)->header('Content-Type','text/plain');
+        }else
+        {
+            return redirect('/crawljob/list');
+        }
+    }
 }
