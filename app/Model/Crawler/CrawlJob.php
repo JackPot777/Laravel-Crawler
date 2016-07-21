@@ -3,7 +3,7 @@
 namespace App\Model\Crawler;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Sunra\PhpSimple\HtmlDomParser;
 class CrawlJob extends Model
 {
     protected $table='crawl_jobs';
@@ -17,8 +17,8 @@ class CrawlJob extends Model
     public function crawl()
     {
         $domHtml = HtmlDomParser::file_get_html($this->url);
-        $this->html_content = ''.$dom;
-        $this->html_title 	= ''.$dom->find('title')[0]->plaintext;
+        $this->html_content = ''.$domHtml;
+        $this->html_title 	= ''.$domHtml->find('title')[0]->plaintext;
         $this->iscompleted = true;
         $this->save();
     }

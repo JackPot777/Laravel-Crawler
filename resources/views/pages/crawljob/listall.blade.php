@@ -57,7 +57,7 @@
 									<td>{{$crawlJob->updated_at}}</td>
 									<td class="last">
 										@if ($crawlJob->iscompleted)
-										<a class="btn btn-xs btn-success" href="{{url('/crawljob/rawhtml/$crawljob->id')}}">Raw html</a>
+										<a class="btn btn-xs btn-success" href="{{url('/crawljob/rawhtml/'.$crawlJob->id)}}">Raw html</a>
 										@else
 										<a class="btn btn-xs btn-success" disabled="true" href="#">Raw html</a>
 										@endif

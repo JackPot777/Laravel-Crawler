@@ -25,11 +25,17 @@ class Job extends Model
     {
         return $this->crawler()->first()->isactivated;
     }
-    public function activate()
+    public function start()
     {
         $crawler = $this->crawler()->first();
-        $crawler->isactivate = true;
-        $crawler->start();
+        $crawler->isactivated = true;
+        $crawler->save();
+    }
+    public function pause()
+    {
+        $crawler = $this->crawler()->first();
+        $crawler->isactivated = false;
+        $crawler->save();
     }
     private function generateCrawlJobs()
     {

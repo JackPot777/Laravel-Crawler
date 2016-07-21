@@ -52,10 +52,10 @@
 									<td class=" ">{{$crawler->desc}}</td>
 									<td class="">{!!$crawler->isactivated?'<span class="label label-success"><span class="fa fa-toggle-on"></span> ON</span>':'<span class="label label-danger"><span class="fa fa-toggle-off"></span> OFF</span>'!!}</td>
 									<td class=" ">{{$crawler->maxinstances}}</td>
-									<td class="">{!!$crawler->url()->first()==null?'<span class="label label-danger">None</span>':'<span class="label label-success">'.$crawler->url()->first()->name.'</span>'!!}</td>
+									<td class="">{!!$crawler->job()->first()==null?'<span class="label label-danger">None</span>':'<span class="label label-success">'.$crawler->job()->first()->name.'</span>'!!}</td>
 									<td class="">{{$crawler->updated_at}}</td>
 									<td class=" last">
-									@if ($crawler->isRemovable())
+									@if ($crawler->isactivated)
 										<a class="btn btn-xs btn-danger" href="{{url('crawler/delete/'.$crawler->id)}}">Remove</a>
 									@else
 										<span class="label label-info">In Process</span>

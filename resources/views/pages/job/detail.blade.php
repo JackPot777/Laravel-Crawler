@@ -75,7 +75,7 @@
 								  <th>Status</th>
 								  <td>
 									<div class="progress">
-										<div class="progress-bar progress-bar-success"  style="min-width:5em;width: {{(int) $job->crawlJobs()->where('iscompleted',1)->count()/$job->crawlJobs()->count() }}%;">
+										<div class="progress-bar progress-bar-success"  style="min-width:5em;width: {{(int) $job->crawlJobs()->where('iscompleted',1)->count()/$job->crawlJobs()->count() *100 }}%;">
 											{{$job->crawlJobs()->where('iscompleted',1)->count()}}/
 											{{$job->crawlJobs()->count()}}
 										</div>
@@ -90,10 +90,10 @@
 						<div class="col-xs-12">
 						  <a href="{{url('/crawljob/get/'.$job->id)}}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Show Crawl Job List</a>
 						@if (!$job->isActivated())
-						  <button class="btn btn-success pull-right" style="margin-right: 5px;"><i class="fa fa-start"></i> Start</button>
-						  <button class="btn btn-danger pull-right" style="margin-right: 5px;"><i class="fa fa-remove"></i> delete</button>
+						  <a href="{{url('/job/start/'.$job->id)}}" class="btn btn-success pull-right" style="margin-right: 5px;"><i class="fa fa-beer"></i> Start</a>
+						  <a href="{{url('/job/delete/'.$job->id)}}" class="btn btn-danger pull-right" style="margin-right: 5px;"><i class="fa fa-remove"></i> delete</a>
 @else
-						  <button class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-pause"></i> Pause</button>
+						  <a href="{{url('/job/pause/'.$job->id)}}" class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-pause"></i> Pause</a>
 @endif
 						</div>
 					</div>

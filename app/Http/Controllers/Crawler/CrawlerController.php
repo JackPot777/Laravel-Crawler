@@ -156,12 +156,31 @@ class CrawlerController extends Controller
     {
         $job = Job::find($jobId);
         $errors = [];
-        if ($job->isActivated())
+        if ($job->crawler()->first()->isactivated)
         {
             $errors = ['The job is already activated.'];
         }else
         {
             $job->start();
+        }
+        return redirect('/job/get/'.$jobId)->with('errors',$errors);
+    }
+    /**
+     * Pause the job.
+     *
+     * @param int $jobId job id
+     * @return \Illuminate\Http\Response
+     */
+    public function getPauseJob(int $jobId)
+    {
+        $job = Job::find($jobId);
+        $errors = [];
+        if (!$job->crawler()->first()->isactivated)
+        {
+            $errors = ['The job is already deactivated.'];
+        }else
+        {
+            $job->pause();
         }
         return redirect('/job/get/'.$jobId)->with('errors',$errors);
     }
