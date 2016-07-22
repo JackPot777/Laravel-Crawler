@@ -3,44 +3,59 @@
 namespace App\Model\Crawler;
 
 use App\Utility\Thread;
+use App\Utility\Utili\Utilityy;
 use App\Model\Crawler\CrawlJob;
-
 class AsyncCrawler extends Thread
 {
-	protected 	$crawlJob;
+    /**
+     * A controlled CrawlJob for the AsyncCrawler.
+     *
+     * @var CrawlJob
+     */
+    protected   $crawlJob;
 
-	public function __construct(CrawlJob $crawlJob)
-	{
-		$this->crawlJob = $crawlJob;
-		parent::__construct($crawlJob);
-	}
+    /**
+     * Construct a AsyncCrawler.
+     *
+     * @param CrawlJob  $crawlJob   A CrawlJob Object with completed data set(url, name, etc).
+     */
+    public function __construct(CrawlJob $crawlJob)
+    {
+        $this->crawlJob = $crawlJob;
+        parent::__construct($crawlJob);
+    }
 
-	public function setCrawlJob(CrawlJob $crawlJob)
-	{
-		$this->crawlJob = $crawlJob;
-	}
+    /**
+     * Set a CrawlJob into AsyncCrawler.
+     *
+     * @param CrawlJob  $crawlJob   A Completed CrawlJob Object.
+     */
+    public function setCrawlJob(CrawlJob $crawlJob)
+    {
+        $this->crawlJob = $crawlJob;
+    }
 
-	public function start()
-	{
-		$pid = @pcntl_fork();
-		if ( $pid == -1 ) {
-			$this->fatalError(Thread::COULD_NOT_FORK);
-		}
-		if ( $pid ) {
-			// parent
-			$this->_pid = $pid;
-		} else {
-			// child
-			pcntl_signal(SIGTERM, array( $this, 'handleSignal' ));
-			$this->info ('#' . $this->crawlJob->id . ' ' . ' - Start Crawling : '. $this->crawlJob->url);
-			$this->crawlJob->crawl();
-			exit( 0 );
-		}
-	}
-	private function info(string $str)
-	{
-		$output = new \Symfony\Component\Console\Output\ConsoleOutput();
-		$output->writeln('<info>'.$str.'</info>');
-	}
-
+    /**
+     * Start the Crawling in Multithread.
+     *
+     * @throws \Exception Thread::COULD_NOT_FORK|Thread::FUNCTION_NOT_CALLABLE
+     */
+    public function start()
+    {
+        $pid = @pcntl_fork();
+        if ( $pid == -1 )
+        {
+            $this->fatalError(Thread::COULD_NOT_FORK);
+        }
+        if ( $pid )
+        {
+            // Parent Process
+            $this->_pid = $pid;
+        } else {
+            // Child Process
+            pcntl_signal(SIGTERM, array( $this, 'handleSignal' ));
+            $this->crawlJob->crawl();
+            exit( 0 );
+        }
+    }
 }

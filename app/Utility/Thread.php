@@ -142,7 +142,7 @@ class Thread
     public static function isRunnableOk( $runnable )
     {
         return true;
-        return ( is_callable($runnable) );
+        //return ( is_callable($runnable) ); Removed due to its too hard to refractor.
     }
 
     /**

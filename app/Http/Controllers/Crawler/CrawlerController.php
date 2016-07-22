@@ -118,7 +118,7 @@ class CrawlerController extends Controller
             return redirect('/job/create')->withErrors($validator)->withInput();
         }
         $job = new Job($request->all());
-        $job->save();
+        $job->initialize();
         return redirect('/job/list');
     }
 
