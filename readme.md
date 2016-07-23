@@ -11,16 +11,16 @@
 * Laravel 5.1 LTS
 
 ## Installation Guide
-  git clone https://github.com/simplylouis/Laravel-Crawler
-  cd Laravel-Crawler
-  composer install
-  php artisan migrate
-  php artisan db:seed
-  php artisan DaemonDispatcher:Start #background Process
+    git clone https://github.com/simplylouis/Laravel-Crawler
+    cd Laravel-Crawler
+    composer install
+    php artisan migrate
+    php artisan db:seed
+    php artisan DaemonDispatcher:Start #background Process
 
 ## Default Account
-  email:      admin@admin.com
-  password:   admin
+    email:      admin@admin.com
+    password:   admin
 
 ## Screenshots
 ![](https://raw.githubusercontent.com/simplylouis/Laravel-Crawler/master/image.gif)
