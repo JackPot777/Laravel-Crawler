@@ -1,27 +1,36 @@
-## Laravel PHP Framework
+# Laravel Universal Crawler
+> A web html crawler that crawl the data into your database.
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+## Current Version
+* V.0.1-alpha - Alpha Stage
+* Not in Production
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+## System Requirements
+* PHP 7 
+* enable pcntl_fork
+* Laravel 5.1 LTS
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+## Installation Guide
+  git clone https://github.com/simplylouis/Laravel-Crawler
+  cd Laravel-Crawler
+  composer install
+  php artisan migrate
+  php artisan db:seed
+  php artisan DaemonDispatcher:Start #background Process
 
-## Official Documentation
+## Default Account
+  email:      admin@admin.com
+  password:   admin
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+## Screenshots
+![](https://raw.githubusercontent.com/simplylouis/Laravel-Crawler/master/image.gif)
 
-## Contributing
+## Credits
+* Gentelella - Bootstrap Admin Template by Colorlib
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+## Contribution
+Please fork and submit a pull request :D .
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-### License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+## Copyright and License
+Code and documentation copyright by [Owner](http://www.simplylouis.com) , licensed under the [MIT license](http://opensource.org/licenses/MIT)
+Free for commercial use and non-commercial use.
