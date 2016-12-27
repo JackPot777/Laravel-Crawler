@@ -65,12 +65,12 @@ class Crawler extends Model
             $asyncCrawlers[] = new AsyncCrawler($crawlJobs->shift());
             $ut->info ('#' . $this->id . ' Crawler - ' . $this->name . ' : ' . ($thread+1) . '/' . $this->maxinstances . ' Async Crawler initialized.');
         }
-        foreach ($asyncCrawlers as $thread=>$asyncCrawler)
+        foreach ($asyncCrawlers as $thread=>&$asyncCrawler)
         {
             $asyncCrawler->start();
             $ut->info ('#' . $this->id . ' Crawler - ' . $this->name . ' : ' . ($thread+1) . '/' . $this->maxinstances . ' Async Crawler started.');
         }
-        foreach ($asyncCrawlers as $thread=>$asyncCrawler)
+        foreach ($asyncCrawlers as $thread=>&$asyncCrawler)
         {
             if (!$asyncCrawler->isAlive())
             {
@@ -80,8 +80,10 @@ class Crawler extends Model
                     unset($asyncCrawlers[$thread]);
                     $ut->info ('#' . $this->id . ' Crawler - ' . $this->name . ' : ' . ($thread+1) . '/' . $this->maxinstances . ' Async Crawler destroyed.');
                 } else {
-                    $asyncCrawler->setCrawlJob($crawlJobs->shift());
-                    $asyncCrawler->start();
+                    unset($asyncCrawlers[$thread]);
+                    $nAsyncCrawler = new ASyncCrawler($crawlJobs->shift());
+                    $asyncCrawlers[$thread] = $nAsyncCrawler;
+                    $nAsyncCrawler->start();
                     $ut->info ('#' . $this->id . ' Crawler - ' . $this->name . ' : ' . ($thread+1) . '/' . $this->maxinstances . ' Async Crawler assigned new job and started.');
                 }
             }
