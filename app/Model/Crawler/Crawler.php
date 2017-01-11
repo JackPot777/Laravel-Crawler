@@ -96,7 +96,7 @@ class Crawler extends Model
                     $ut->info ('#' . $this->id . ' Crawler - ' . $this->name . ' : ' . ($thread+1) . '/' . $this->maxinstances . ' Async Crawler assigned new job and started.');
                 }
             }
-            sleep(1);
+            sleep($this->interval);
         }
         $j = $this->job()->first();
         $j->status = 'Completed';

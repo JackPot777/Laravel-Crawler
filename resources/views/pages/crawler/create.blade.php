@@ -42,6 +42,12 @@
                                 <input id="maxinstances" type="integer" name="maxinstances" >
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12">Interval</label>
+                            <div class="col-md-10 col-sm-10 col-xs-12">
+                                <input id="interval" type="integer" name="interval" >
+                            </div>
+                        </div>
                         <div class="ln_solid"></div>
                         <div class="form-group">
                             <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
@@ -63,5 +69,6 @@
 @section('customScript')
 <script>
 $("#maxinstances").ionRangeSlider({ min: 1, max: 100, from: 10 });
+$("#interval").ionRangeSlider({ min: 1, max: 100, from:  1});
 </script>
 @stop

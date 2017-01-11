@@ -36,10 +36,14 @@ class CrawlJob extends Model
      */
     public function crawl()
     {
+        if (!$this->iscompleted) {
         $domHtml = HtmlDomParser::file_get_html($this->url);
         $this->html_content = ''.$domHtml;
         $this->html_title   = ''.$domHtml->find('title')[0]->plaintext;
-        $this->iscompleted  = true;
+        $this->response_code = http_response_code();
+        $this->tried_times = $this->tried_times + 1;
+        $this->iscompleted = $this->response_code == 200;
         $this->save();
+        }
     }
 }

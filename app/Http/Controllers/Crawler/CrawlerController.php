@@ -33,6 +33,7 @@ class CrawlerController extends Controller
             'name' => 'required|min:5|max:255',
             'desc' => 'required|min:5|max:255',
             'maxinstances' => 'required|numeric|min:1|max:100',
+            'interval' => 'required|numeric|min:1|max:100',
         ]);
         if ($validator->fails())
         {
