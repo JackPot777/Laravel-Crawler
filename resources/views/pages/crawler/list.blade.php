@@ -55,10 +55,10 @@
 									<td class="">{!!$crawler->job()->first()==null?'<span class="label label-danger">None</span>':'<span class="label label-success">'.$crawler->job()->first()->name.'</span>'!!}</td>
 									<td class="">{{$crawler->updated_at}}</td>
 									<td class=" last">
-									@if ($crawler->isactivated)
-										<a class="btn btn-xs btn-danger" href="{{url('crawler/delete/'.$crawler->id)}}">Remove</a>
-									@else
+									@if ($crawler->isactivated || $crawler->job()->first() !=null )
 										<span class="label label-info">In Process</span>
+									@else
+										<a class="btn btn-xs btn-danger" href="{{url('crawler/delete/'.$crawler->id)}}">Remove</a>
 									@endif
 									</td>
 								</tr>

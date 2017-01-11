@@ -41,6 +41,15 @@ class Crawler extends Model
     }
 
     /**
+     * Return crawler is removable , cannot have job or isn't activated.
+     * 
+     * @return boolean isRemoveable of the crawler
+     */
+    public function isRemovable(){
+        return $this->job()->first() == null;
+    }
+
+    /**
      * Start crawler to crawl un-completed jobs.
      *
      * @return \Symfony\Component\Console\Output\ConsoleOutput $ut Crawler Log Output
