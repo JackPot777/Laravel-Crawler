@@ -84,7 +84,16 @@ class CrawlerController extends Controller
      */
     public function getCreateJob()
     {
-        $pass['crawlers'] = Crawler::where('isactivated',false)->get();
+        $crawlers = Crawler::where('isactivated',false)->get();
+
+        foreach($crawlers as $key => $crawler){
+            if (!$crawler->isRemovable()){
+                unset($crawlers[$key]);
+            }
+        }
+
+        $pass['crawlers'] = $crawlers;
+
         $pass['urls'] = Url::get();
         return view('pages.job.create',$pass);
     }
