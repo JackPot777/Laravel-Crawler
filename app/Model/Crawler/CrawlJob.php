@@ -36,6 +36,7 @@ class CrawlJob extends Model
      */
     public function crawl()
     {
+        $this->tried_times = $this->tried_times + 1;
         if (!$this->iscompleted) {
         $domHtml = HtmlDomParser::file_get_html($this->url);
         $this->html_content = ''.$domHtml;
