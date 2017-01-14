@@ -62,6 +62,32 @@ class Job extends Model
     }
 
     /**
+     * Get if the job has a number of uncompleted crawljobs but already tried once or more.
+     * 
+     * @return boolean $isRetriable
+     */
+    public function isRetriable()
+    {
+        $isRetriable = Job::find($jobId)->crawlJobs()
+        ->where('tried_times' , '>=', 1) 
+        ->where('response_code','!=',200)->count() > 0;
+        return $isRetriable;
+    }
+
+    /**
+     * Get the total number of failed jobs.
+     *
+     * @return int
+     */ 
+    public function getNumRetriableJobs()
+    {
+        $num = Job::find($jobId)->crawlJobs()
+        ->where('tried_times' , '>=', 1) 
+        ->where('response_code','!=',200)->count();
+        return $num;
+    }
+
+    /**
      * Start the crawler in data-model.
      *
      */

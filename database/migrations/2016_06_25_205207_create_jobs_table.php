@@ -16,7 +16,7 @@ class CreateJobsTable extends Migration
             $table->increments('id');
             $table->string('name')->nullable(false);
             $table->enum('status',['ToBeDone','Scheduled','Completed'])->default('ToBeDone');
-			$table->dateTime('scheduled_datetime')->default(null);
+            $table->dateTime('scheduled_datetime')->default(null);
             $table->dateTime('completed_datetime')->default(null);
             $table->integer('url_id')->unsigned();
             $table->foreign('url_id')->references('id')->on('urls');

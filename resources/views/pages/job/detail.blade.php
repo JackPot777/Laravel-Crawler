@@ -90,7 +90,11 @@
                         <div class="col-xs-12">
                             <a href="{{url('/crawljob/get/'.$job->id)}}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Show Crawl Job List</a>
                             @if (!$job->isActivated())
+                            @if ($job->status == 'Completed' && $job->isRetriable())
+                            <a href="{{url('/job/retry/'.$job->id)}}" class="btn btn-success pull-right" style="margin-right: 5px;"><i class="fa fa-beer"></i> Retry({{$job->getNumRetriableJobs()}})</a>
+                            @elseif ($job->status != 'Completed')
                             <a href="{{url('/job/start/'.$job->id)}}" class="btn btn-success pull-right" style="margin-right: 5px;"><i class="fa fa-beer"></i> Start</a>
+                            @endif
                             <a href="{{url('/job/delete/'.$job->id)}}" class="btn btn-danger pull-right" style="margin-right: 5px;"><i class="fa fa-remove"></i> delete</a>
                             @else
                             <a href="{{url('/job/pause/'.$job->id)}}" class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-pause"></i> Pause</a>
