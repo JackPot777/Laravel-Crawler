@@ -228,6 +228,9 @@ class CrawlerController extends Controller
     public function getJob(int $jobId)
     {
         $pass['job'] = Job::find($jobId);
+        $pass['isRetriable'] = Job::find($jobId)->crawlJobs()
+                ->where('tried_times' , '>=', 1) 
+                ->where('response_code','!=',200)->count() > 0;
         return view('pages.job.detail',$pass);
     }
 
