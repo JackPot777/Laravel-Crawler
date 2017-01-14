@@ -29,7 +29,9 @@
                                     <th class="column-title">Name</th>
                                     <th class="column-title">CrawlerID</th>
                                     <th class="column-title">UrlID</th>
-                                    <th class="column-title">Status</th>
+                                    @if ($showStatus)
+                                        <th class="column-title">Status</th>
+                                    @endif
                                     <th class="column-title">Scheduled Datetime</th>
                                     <th class="column-title">Completed Datetime</th>
                                     <th class="column-title">Last Modified</th>
@@ -45,7 +47,9 @@
                                     <td class=" ">{{$job->name}}</td>
                                     <td class=" ">{{$job->crawler_id}}</td>
                                     <td class=" ">{{$job->url_id}}</td>
-                                    <td class=" ">{{$job->status}}</td>
+                                    @if ($showStatus)
+                                        <td class=" ">{{$job->status}}</td>
+                                    @endif
                                     <td class=" ">{{$job->scheduled_datetime}}</td>
                                     <td class=" ">{{$job->completed_datetime}}</td>
                                     <td class="">{{$job->updated_at}}</td>
