@@ -39,6 +39,8 @@
                                     <th class="column-title">Url</th>
                                     <th class="column-title">Html Title</th>
                                     <th class="column-title">Completed</th>
+                                    <th class="column-title">Response Code</th>
+                                    <th class="column-title">Tried</th>
                                     <th class="column-title">Last Created</th>
                                     <th class="column-title">Last Modified</th>
                                     <th class="column-title no-link last"><span class="nobr">Action</span>
@@ -53,6 +55,14 @@
                                     <td>{{$crawlJob->url}}</td>
                                     <td>{{$crawlJob->html_title}}</td>
                                     <td>{{$crawlJob->iscompleted}}</td>
+                                    <td>
+                                    @if ($crawlJob->iscompleted)
+                                        {{$crawlJob->response_code}}
+                                    @else
+                                        <b>Not Yet</b>
+                                    @endif
+                                    </td>
+                                    <td>{{$crawlJob->tried_times}}</td>
                                     <td>{{$crawlJob->created_at}}</td>
                                     <td>{{$crawlJob->updated_at}}</td>
                                     <td class="last">
