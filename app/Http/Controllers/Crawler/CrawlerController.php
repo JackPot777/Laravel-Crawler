@@ -202,6 +202,7 @@ class CrawlerController extends Controller
      */
     public function getListJobs(string $status=null)
     {
+        $pass['showStatus'] = false;
         switch ($status){
         case 'tobedone':
             $pass['jobs'] = Job::where('status','ToBeDone')->paginate();
@@ -214,6 +215,7 @@ class CrawlerController extends Controller
             break;
         case 'all':
         default:
+            $pass['showStatus'] = true;
             $pass['jobs'] = Job::paginate();
         }
         $pass['last'] = Job::orderBy('updated_at','desc')->first();
