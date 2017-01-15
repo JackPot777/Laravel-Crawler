@@ -3,9 +3,7 @@
 namespace App\Model\Crawler;
 
 use Illuminate\Database\Eloquent\Model;
-use Sunra\PhpSimple\HtmlDomParser;
-
-use App\Model\System\HTMLCrawler;
+use Goutte\Client;
 
 class CrawlJob extends Model
 {
@@ -14,7 +12,7 @@ class CrawlJob extends Model
      *
      * @var string
      */
-    protected $table='crawl_jobs';
+    protected $table='crawl_jobs';Goutte\Client
 
     /**
      * Mass assignment Fillables.
@@ -41,13 +39,13 @@ class CrawlJob extends Model
     {
         $this->tried_times = $this->tried_times + 1;
         if (!$this->iscompleted) {
-            /**
-             *  TODO:: Use Goutte Crawler
-             */ 
-            $HTMLCrawler = new HTMLCrawler();
-            $HTMLCrawler->load_file($this->url);
-            $this->response_code = $HTMLCrawler->get_html_response_header()['response_code'];
-            $domHtml = $HTMLCrawler->plaintext;
+            $HTMLCrawler = new Client();
+            $HTMLCrawler->request('GET',$this->url);
+
+            $response_code = $HTMLCrawler->getResponse()->getStatus();
+            $domHtml = $HTMLCrawler->getBody(); 
+
+            $this->response_code = $response_code;
             $this->html_content = ''.$domHtml;
             $this->html_title   = ''.$domHtml->find('title')[0]->plaintext;
             $this->tried_times = $this->tried_times + 1;
