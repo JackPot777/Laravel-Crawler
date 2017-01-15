@@ -21,7 +21,7 @@ class Crawler extends Model
      *
      * @var array[string]
      */
-    protected $fillable = ['name','desc','maxinstances'];
+    protected $fillable = ['name','desc','maxinstances','interval'];
 
     /**
      * Get Current Activated Crawlers Id, for anti-multi-started Crawlers.
