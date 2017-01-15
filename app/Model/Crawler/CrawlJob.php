@@ -12,7 +12,7 @@ class CrawlJob extends Model
      *
      * @var string
      */
-    protected $table='crawl_jobs';Goutte\Client
+    protected $table='crawl_jobs';
 
     /**
      * Mass assignment Fillables.
@@ -41,10 +41,9 @@ class CrawlJob extends Model
         if (!$this->iscompleted) {
             $HTMLCrawler = new Client();
             $HTMLCrawler->request('GET',$this->url);
-
             $response_code = $HTMLCrawler->getResponse()->getStatus();
-            $domHtml = $HTMLCrawler->getBody(); 
-
+            $domHtml = $HTMLCrawler->getResponse()->getContent(); 
+            
             $this->response_code = $response_code;
             $this->html_content = ''.$domHtml;
             $this->html_title   = ''.$domHtml->find('title')[0]->plaintext;
