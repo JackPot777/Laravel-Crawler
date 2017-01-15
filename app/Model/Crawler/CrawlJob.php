@@ -48,7 +48,6 @@ class CrawlJob extends Model
             $this->response_code = $response_code;
             $this->html_content = ''.$domHtml;
             $this->html_title   = ''.$title;
-            $this->tried_times = $this->tried_times + 1;
             $this->iscompleted = $this->response_code == 200;
             $this->save();
         }
