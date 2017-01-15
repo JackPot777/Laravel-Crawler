@@ -93,6 +93,9 @@ class Job extends Model
      */
     public function start()
     {
+        $this->status = 'Scheduled';
+        $this->save();
+
         $crawler = $this->crawler()->first();
         $crawler->isactivated = true;
         $crawler->save();
@@ -104,6 +107,9 @@ class Job extends Model
      */
     public function pause()
     {
+        $this->status = 'ToBeDone';
+        $this->save();
+
         $crawler = $this->crawler()->first();
         $crawler->isactivated = false;
         $crawler->save();
