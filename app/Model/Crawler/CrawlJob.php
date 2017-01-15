@@ -4,6 +4,9 @@ namespace App\Model\Crawler;
 
 use Illuminate\Database\Eloquent\Model;
 use Sunra\PhpSimple\HtmlDomParser;
+
+use App\Model\System\HTMLCrawler;
+
 class CrawlJob extends Model
 {
     /**
@@ -38,13 +41,18 @@ class CrawlJob extends Model
     {
         $this->tried_times = $this->tried_times + 1;
         if (!$this->iscompleted) {
-        $domHtml = HtmlDomParser::file_get_html($this->url);
-        $this->html_content = ''.$domHtml;
-        $this->html_title   = ''.$domHtml->find('title')[0]->plaintext;
-        $this->response_code = http_response_code();
-        $this->tried_times = $this->tried_times + 1;
-        $this->iscompleted = $this->response_code == 200;
-        $this->save();
+            /**
+             *  TODO:: Use Goutte Crawler
+             */ 
+            $HTMLCrawler = new HTMLCrawler();
+            $HTMLCrawler->load_file($this->url);
+            $this->response_code = $HTMLCrawler->get_html_response_header()['response_code'];
+            $domHtml = $HTMLCrawler->plaintext;
+            $this->html_content = ''.$domHtml;
+            $this->html_title   = ''.$domHtml->find('title')[0]->plaintext;
+            $this->tried_times = $this->tried_times + 1;
+            $this->iscompleted = $this->response_code == 200;
+            $this->save();
         }
     }
 }
