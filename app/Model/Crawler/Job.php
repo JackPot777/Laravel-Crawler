@@ -68,7 +68,7 @@ class Job extends Model
      */
     public function isRetriable()
     {
-        $isRetriable = Job::find($jobId)->crawlJobs()
+        $isRetriable = $this->crawlJobs()
         ->where('tried_times' , '>=', 1) 
         ->where('response_code','!=',200)->count() > 0;
         return $isRetriable;

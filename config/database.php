@@ -14,6 +14,9 @@ return [
     */
 
     'fetch' => PDO::FETCH_CLASS,
+    'options'   => [
+        PDO::ATTR_EMULATE_PREPARES => true
+    ],
 
     /*
     |--------------------------------------------------------------------------

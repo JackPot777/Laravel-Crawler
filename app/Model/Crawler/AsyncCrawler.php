@@ -3,7 +3,7 @@
 namespace App\Model\Crawler;
 
 use App\Utility\Thread;
-use App\Utility\Utili\Utilityy;
+use App\Utility\Utility;
 use App\Model\Crawler\CrawlJob;
 class AsyncCrawler extends Thread
 {
@@ -37,6 +37,8 @@ class AsyncCrawler extends Thread
 
     /**
      * Start the Crawling in Multithread.
+     * 
+     * @param int $interval
      *
      * @throws \Exception Thread::COULD_NOT_FORK|Thread::FUNCTION_NOT_CALLABLE
      */

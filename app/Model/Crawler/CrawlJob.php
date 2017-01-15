@@ -39,14 +39,15 @@ class CrawlJob extends Model
     {
         $this->tried_times = $this->tried_times + 1;
         if (!$this->iscompleted) {
-            $HTMLCrawler = new Client();
-            $HTMLCrawler->request('GET',$this->url);
-            $response_code = $HTMLCrawler->getResponse()->getStatus();
-            $domHtml = $HTMLCrawler->getResponse()->getContent(); 
-            
+            $HTTPClient= new Client();
+            $HTMLCrawler = $HTTPClient->request('GET',$this->url);
+            $response_code = $HTTPClient->getResponse()->getStatus();
+            $domHtml = $HTTPClient->getResponse()->getContent(); 
+            $title = $HTMLCrawler->filter('title')->first()->text();
+
             $this->response_code = $response_code;
             $this->html_content = ''.$domHtml;
-            $this->html_title   = ''.$domHtml->find('title')[0]->plaintext;
+            $this->html_title   = ''.$title;
             $this->tried_times = $this->tried_times + 1;
             $this->iscompleted = $this->response_code == 200;
             $this->save();
