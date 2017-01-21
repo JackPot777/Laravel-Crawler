@@ -71,6 +71,8 @@ Route::group(['middleware'=>'auth'], function (){
     Route::get('/job/start/{jobId}','Crawler\CrawlerController@getStartJob');
     Route::get('/job/pause/{jobId}','Crawler\CrawlerController@getPauseJob');
     Route::get('/job/delete/{jobId}','Crawler\CrawlerController@getDeleteJob');
+    /*--- Job Result Extraction CRUD--*/
+    Route::get('/extracts','Crawler\ExtractionController@getExtractions');
     /*--- Crawl Jobs CRUD --*/
     Route::get('/crawljob/list','Crawler\CrawlerController@getCrawlJobs');
     Route::get('/crawljob/get/{jobId}','Crawler\CrawlerController@getCrawlJob');

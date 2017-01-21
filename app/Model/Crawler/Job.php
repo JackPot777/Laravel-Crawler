@@ -42,6 +42,16 @@ class Job extends Model
     }
 
     /**
+     * Get a list of extractions
+     *
+     * @return App\Model\Extraction
+     */
+    public function extractions()
+    {
+        return $this->belongsTo('App\Model\Extraction','id','job_id');
+    }
+
+    /**
      * Get a list of crawl jobs.
      *
      * @return App\Model\Crawler\CrawlJob
