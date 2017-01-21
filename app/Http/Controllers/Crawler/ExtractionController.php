@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Crawler;
+namespace App\Http\Controllers/Crawler;
 
 use Illuminate\Http\Request;
 
@@ -30,7 +30,7 @@ class ExtractionController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.extraction/create');
     }
 
     /**
@@ -41,7 +41,6 @@ class ExtractionController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
