@@ -75,6 +75,7 @@ Route::group(['middleware'=>'auth'], function (){
     Route::get('/extractions','Crawler\ExtractionController@index');
     Route::get('/extractions/create','Crawler\ExtractionController@create');
     Route::post('/extractions/store','Crawler\ExtractionController@store');
+    Route::post('/extractions/test','Crawler\ExtractionController@test');
     /*--- Crawl Jobs CRUD --*/
     Route::get('/crawljob/list','Crawler\CrawlerController@getCrawlJobs');
     Route::get('/crawljob/get/{jobId}','Crawler\CrawlerController@getCrawlJob');
