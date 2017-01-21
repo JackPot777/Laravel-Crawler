@@ -138,7 +138,52 @@ class ExtractionController extends Controller
      */
     public function show($id)
     {
-        //
+        $extraction = Extraction::find($id);
+
+        $crawlJobs = $extraction->job()->first()->crawlJobs()->get();
+        $ret = [];
+
+        if ($extraction->type == 'css-selector') {
+            foreach ($crawlJobs as $crawlJob){
+                $res = new SymDomCrawler();
+                $res->addHtmlContent((string) $crawlJob->html_content);
+
+                $extractions = [];
+                $res->filter($extraction->rule)
+                ->each(function ($node) use (&$extractions){
+                    $extractions[] = $node->text();
+                });
+
+                $ret[] = [
+                'crawl_jobs' => [
+                'id' => $crawlJob->id,
+                'response_code' => $crawlJob->response_code,
+                ],
+                'extractions' => $extractions
+                ]; 
+            }
+        } else if($extraction->type == 'regex'){
+            foreach ($crawlJobs as $crawlJob){
+
+                $extractions = [];
+
+                try {
+                    preg_match_all($extraction->rule, $crawlJob->html_content, $extractions);
+                }catch(\Exception $e){
+                    $extractions[] = $e->getMessage();
+                }
+
+                $ret[] = [
+                'crawl_jobs' => [
+                'id' => $crawlJob->id,
+                'response_code' => $crawlJob->  response_code,
+                ],
+                'extractions' => $extractions
+                ]; 
+            }
+        }
+
+        return Response::json($ret);
     }
 
     /**
@@ -172,6 +217,8 @@ class ExtractionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Extraction::find($id)->delete();
+
+        return redirect('/extractions');
     }
 }

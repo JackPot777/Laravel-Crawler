@@ -68,11 +68,11 @@
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
                                             <li>
-                                                <a href="#">getJSON</a>
+                                                <a href="{{url('/extractions/show/'.$extraction->id)}}">getJSON</a>
                                             </li>
                                             <li class="divider"></li>
                                             <li>
-                                                <a href="#">Delete</a>
+                                                <a href="{{url('extractions/delete/'.$extraction->id)}}">Delete</a>
                                             </li>
                                         </ul>
                                     </div>
