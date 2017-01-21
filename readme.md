@@ -2,8 +2,8 @@
 > A web html crawler that crawl the data into your database.
 
 ## Current Version
-* V.0.1-alpha - Alpha Stage
-* Not in Production
+v1.0 - 20170121 Alpha Build
+Enough for my usage.
 
 ## System Requirements
 * PHP 7 
