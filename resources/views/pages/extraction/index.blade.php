@@ -31,7 +31,7 @@
                 </div>
                 <div class="x_content" style="display: block;">
                     <div class="table-responsive">
-                        @if (count($Extractions) > 0)
+                    @if (count($extractions) > 0)
                         <table class="table table-striped jambo_table bulk_action">
                             <thead>
                                 <tr class="headings">
