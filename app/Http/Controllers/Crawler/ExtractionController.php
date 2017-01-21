@@ -6,12 +6,16 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Model\Crawler\Job;
+use App\Model\Crawler\CrawlJob;
 use App\Model\Crawler\Extraction;
 use App\Model\Crawler\ExtractionResult;
 
-use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\DomCrawler\Crawler as SymDomCrawler;
 
 use Validator;
+
+use Response;
 
 class ExtractionController extends Controller
 {
@@ -80,24 +84,24 @@ class ExtractionController extends Controller
         }  
 
         // Random Take 10 Entries
-        $crawlJobs = Job::find($request->get('job_id'))->crawlJobs()->orderByRaw("RAND()")->get(10);
-
+        $crawlJobs = Job::find($request->get('job_id'))->crawlJobs()->orderByRaw("RAND()")->take(10)->get();
         $ret = [];
 
         if ($request->get('type') == 'css-selector') {
             foreach ($crawlJobs as $crawlJob){
-                $res = new Response((string) $crawlJob->html_content);
+                $res = new SymDomCrawler();
+                $res->addHtmlContent((string) $crawlJob->html_content);
 
                 $extractions = [];
                 $res->filter($request->get('rule'))
-                ->each(function ($node) use $extractions){
+                ->each(function ($node) use (&$extractions){
                     $extractions[] = $node->text();
-                }
+                });
 
                 $ret[] = [
                 'crawl_jobs' => [
                 'id' => $crawlJob->id,
-                'response_code' => $crawlJob->id,
+                'response_code' => $crawlJob->response_code,
                 ],
                 'extractions' => $extractions
                 ]; 
@@ -108,7 +112,7 @@ class ExtractionController extends Controller
                 $extractions = [];
 
                 try {
-                    preg_match($crawlJob->html_content, $crawlJob->html_content, $matches, PREG_OFFSET_CAPTURE);
+                    preg_match_all($request->get('rule'), $crawlJob->html_content, $extractions);
                 }catch(\Exception $e){
                     $extractions[] = $e->getMessage();
                 }
@@ -116,7 +120,7 @@ class ExtractionController extends Controller
                 $ret[] = [
                 'crawl_jobs' => [
                 'id' => $crawlJob->id,
-                'response_code' => $crawlJob->id  ,
+                'response_code' => $crawlJob->  response_code,
                 ],
                 'extractions' => $extractions
                 ]; 

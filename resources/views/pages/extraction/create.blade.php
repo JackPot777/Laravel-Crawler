@@ -76,7 +76,7 @@
                         <div class="ln_solid"></div>
                         <div class="form-group">
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <button type="button" class="btn btn-info pull-left">Test</button>
+                                <button type="button" onclick="javascript:testExtraction()" class="btn btn-info pull-left">Test</button>
                                 <button type="submit" class="btn btn-success pull-right">Submit</button>
                             </div>
                         </div>
@@ -89,4 +89,13 @@
     </div>
 </div>
 <!-- page content -->
+<script>
+var  testExtraction = function() {
+    $('form').attr('target','_blank');
+    $('form').attr('action','/extractions/test');
+    $('form').submit();
+    $('form').attr('target','');
+    $('form').attr('action','/extractions/store');
+}
+</script>
 @stop
