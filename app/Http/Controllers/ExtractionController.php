@@ -19,7 +19,8 @@ class ExtractionController extends Controller
     public function index()
     {
         $extractions = Extraction::get();
-        return view('pages.extraction/index',['extractions'=>$extractions]);
+        $lastExtraction = Extraction::orderBy('updated_at','desc')->first();
+        return view('pages.extraction/index',['extractions'=>$extractions,'lastExtraction'=>$lastExtraction]);
     }
 
     /**
