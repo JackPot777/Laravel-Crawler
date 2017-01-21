@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers/Crawler;
+namespace App\Http\Controllers\Crawler;
 
 use Illuminate\Http\Request;
 
@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Model\Crawler\Extraction;
 use App\Model\Crawler\ExtractionResult;
+
+use Validator;
 
 class ExtractionController extends Controller
 {
@@ -20,7 +22,7 @@ class ExtractionController extends Controller
     {
         $extractions = Extraction::get();
         $lastExtraction = Extraction::orderBy('updated_at','desc')->first();
-        return view('pages.extraction/index',['extractions'=>$extractions,'lastExtraction'=>$lastExtraction]);
+        return view('pages.extraction.index',['extractions'=>$extractions,'lastExtraction'=>$lastExtraction]);
     }
 
     /**
@@ -30,7 +32,7 @@ class ExtractionController extends Controller
      */
     public function create()
     {
-        return view('pages.extraction/create');
+        return view('pages.extraction.create');
     }
 
     /**
@@ -41,6 +43,19 @@ class ExtractionController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+                'name' => 'required|max:255',
+                'description' => 'required|max:255',
+                'job_id' => 'required|exists:jobs,id',
+                'type'=>'required|in:css-selector,regex',
+                'rule'=>'required'
+            ]);
+        if ($validator->fails()) {
+            return redirect('/extractions/create')->withInput()->withErrors($validator);
+        } else {
+            Extraction::create($request->all());
+            return redirect('/extractions');
+        }
     }
 
     /**

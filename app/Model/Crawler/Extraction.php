@@ -18,7 +18,7 @@ class Extraction extends Model
      *
      * @var array[string]
      */
-    protected $fillable = ['crawlers_id','name','description','rule'];
+    protected $fillable = ['job_id','name','type','description','rule'];
 
     /**
      * Get a belonged job.

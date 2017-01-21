@@ -49,7 +49,7 @@
                             </thead>
                             <tbody>
                                 <?php $i=0?>
-                                @foreach ($Extractions as $extraction)
+                                @foreach ($extractions as $extraction)
                                 <tr class="{{$i%2?'even':'odd'}} pointer">
                                     <td class=" ">{{$extraction->id}}</td>
                                     <td class=" ">{{$extraction->job_id}}</td>
