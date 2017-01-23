@@ -57,6 +57,7 @@ class AsyncCrawler extends Thread
             // Child Process
             pcntl_signal(SIGTERM, array( $this, 'handleSignal' ));
             $this->crawlJob->crawl();
+            sleep(1);
             exit( 0 );
         }
     }
